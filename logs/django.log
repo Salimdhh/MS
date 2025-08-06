@@ -3850,3 +3850,15 @@ WARNING 2025-08-06 17:39:24,792 basehttp 13924 26680 "GET /static/img/logo-icon.
 WARNING 2025-08-06 17:39:24,801 basehttp 13924 24464 "GET /static/img/full-logo.svg HTTP/1.1" 404 1865
 WARNING 2025-08-06 17:39:24,834 basehttp 13924 12532 "GET /static/img/logo-icon.svg HTTP/1.1" 404 1865
 INFO 2025-08-06 17:39:24,856 basehttp 13924 26904 "GET /manage-groups/ HTTP/1.1" 200 10598
+INFO 2025-08-06 19:11:15,927 autoreload 22636 27836 Watching for file changes with StatReloader
+INFO 2025-08-06 19:11:43,180 autoreload 22636 27836 C:\Users\PC\Desktop\upload\MS\MS\settings.py changed, reloading.
+INFO 2025-08-06 19:11:44,025 autoreload 19348 14604 Watching for file changes with StatReloader
+INFO 2025-08-06 19:11:45,485 autoreload 19348 14604 C:\Users\PC\Desktop\upload\MS\MS\settings.py changed, reloading.
+INFO 2025-08-06 19:11:46,653 autoreload 9044 27864 Watching for file changes with StatReloader
+INFO 2025-08-06 19:11:48,072 autoreload 9044 27864 C:\Users\PC\Desktop\upload\MS\MS\settings.py changed, reloading.
+INFO 2025-08-06 19:11:49,026 autoreload 24240 23404 Watching for file changes with StatReloader
+INFO 2025-08-06 19:11:53,677 autoreload 24240 23404 C:\Users\PC\Desktop\upload\MS\MS\settings.py changed, reloading.
+INFO 2025-08-06 19:11:54,577 autoreload 26536 27944 Watching for file changes with StatReloader
+INFO 2025-08-06 19:12:06,776 autoreload 26536 27944 C:\Users\PC\Desktop\upload\MS\MS\settings.py changed, reloading.
+INFO 2025-08-06 19:12:08,022 autoreload 26548 25112 Watching for file changes with StatReloader
+INFO 2025-08-06 19:13:18,454 autoreload 19352 25248 Watching for file changes with StatReloader
