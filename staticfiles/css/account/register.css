@@ -1,19 +1,21 @@
-/* General Base Styles */
-body {
+/* Ensure full viewport height and centering */
+html, body {
+    height: 100%;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    direction: rtl; /* For Arabic text */
-    text-align: right; /* Align text to the right for RTL */
-    min-height: 100vh; /* Ensures body takes full viewport height */
-    background-color: #f3f4f6; /* Equivalent to Tailwind's gray-100 */
+    padding: 0;
+}
+
+body {
     display: flex;
-    flex-direction: column; /* Allow content to stack vertically */
-    align-items: center;
-    justify-content: center;
-    padding: 1rem; /* Default padding for overall layout on larger screens */
-    box-sizing: border-box; /* Include padding in element's total width/height */
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    background-color: var(--background-light); /* Using a variable from hr_flow_style.css */
+    font-family: 'Cairo', sans-serif;
+    direction: rtl; /* Keep RTL for the entire page */
+    text-align: right; /* Keep right alignment for general text */
+    color: var(--text-dark);
+    /* Remove padding from body that might interfere with centering */
+    padding: 0;
 }
 
 /* Outer Container for headings and card */
@@ -23,7 +25,12 @@ body {
     align-items: center; /* Center items horizontally */
     width: 100%; /* Take full width */
     max-width: 28rem; /* Max width for the entire container on larger screens */
-    margin-bottom: 2rem; /* Space below the container */
+    /* When body is centered, margin-bottom on this container might push it up from the true center */
+    /* Consider if you really need margin-bottom here when body is handling full vertical centering */
+    margin-bottom: 0; /* Remove margin-bottom to ensure vertical centering by body */
+    /* The max-width here makes sense for the overall content block (headings + card) */
+    /* If you want the whole outer-login-container to be a card with shadow, apply styles here. */
+    /* If only .bg-white should be the card, keep styles on .bg-white and remove from here. */
 }
 
 /* New Headings above the card */
@@ -33,6 +40,7 @@ body {
     color: #1a202c; /* Equivalent to gray-900 or almost black */
     margin-bottom: 0.5rem; /* space-y-2 */
     text-align: center;
+    width: 100%; /* Ensures heading centers properly within its parent */
 }
 
 .sub-heading {
@@ -40,6 +48,7 @@ body {
     color: #4a5568; /* Equivalent to gray-600 */
     margin-bottom: 2rem; /* space-y-8 */
     text-align: center;
+    width: 100%; /* Ensures sub-heading centers properly within its parent */
 }
 
 /* Card Container Styles */
@@ -48,7 +57,8 @@ body {
     border-radius: 0.5rem; /* 8px */
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     padding: 2rem; /* Default padding inside the card */
-    width: 100%; /* Ensures it takes full width of its container */
+    width: 100%; /* Ensures it takes full width of its container (.outer-login-container) */
+    box-sizing: border-box; /* Important for padding */
 }
 
 /* Icon Container (Blue Circle) */
@@ -204,15 +214,12 @@ body {
 /* "Forgot password?" link & "No account?" link */
 .text-blue-600 {
     color: #2563eb;
-}
-
-/* Remove underline from links */
-.text-blue-600.hover\:underline,
-.text-blue-600 { /* Apply to all links with this class */
     text-decoration: none; /* Remove underline by default */
 }
-.hover\:underline:hover {
-    text-decoration: underline; /* Re-add underline on hover only */
+/* Re-add underline on hover only for links with this class */
+.text-blue-600.hover\:underline:hover,
+.text-blue-600:hover { /* Apply hover to all links with this class */
+    text-decoration: underline;
 }
 
 .mt-2 {
@@ -269,55 +276,11 @@ body {
     text-align: center;
 }
 
-/* Toast Notification Styles */
-#toast-container {
-    position: fixed;
-    top: 1rem; /* 16px from top */
-    right: 1rem; /* 16px from right */
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Align toasts to the right */
-    pointer-events: none; /* Allows clicks to pass through container */
-}
-
-.toast {
-    color: white;
-    padding: 0.75rem 1.25rem; /* 12px vertical, 20px horizontal */
-    border-radius: 0.5rem; /* 8px */
-    margin-bottom: 0.5rem; /* 8px */
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    min-width: 200px;
-    max-width: 300px; /* Limit toast width */
-    text-align: right;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    pointer-events: auto; /* Make individual toasts clickable/interactable */
-}
-
-.toast.show {
-    opacity: 1;
-}
-
-.toast-default {
-    background-color: #333; /* Default dark background */
-}
-.toast-error {
-    background-color: #ef4444; /* Tailwind red-500 */
-}
-.toast-success {
-    background-color: #22c55e; /* Tailwind green-500 */
-}
-
 
 /* --- Responsive Design (Media Queries) --- */
 
 /* Applies to phones and extra small screens */
 @media (max-width: 767px) {
-    body {
-        padding: 0; /* Ensures no padding on the body itself */
-    }
-
     .outer-login-container {
         margin-bottom: 0;
         max-width: none; /* Allows full width */
@@ -391,15 +354,6 @@ body {
         width: 100%;
         box-sizing: border-box;
     }
-    #toast-container {
-        top: 0.5rem;
-        right: 0.5rem;
-    }
-    .toast {
-        max-width: calc(100% - 1rem); /* Allow toast to take almost full width */
-        padding: 0.6rem 0.9rem;
-        font-size: 0.85rem;
-    }
 }
 
 /* Extra Small Devices (up to 374px) - Further adjustments if needed */
@@ -460,23 +414,10 @@ body {
     .mt-6 {
         margin-top: 0.75rem;
     }
-    #toast-container {
-        top: 0.25rem;
-        right: 0.25rem;
-    }
-    .toast {
-        max-width: calc(100% - 0.5rem);
-        padding: 0.5rem 0.7rem;
-        font-size: 0.75rem;
-    }
 }
-
 
 /* Tablets (768px to 1023px) - Revert to default/tablet specific styles */
 @media (min-width: 768px) and (max-width: 1023px) {
-    body {
-        padding: 2rem; /* Restore body padding */
-    }
     .outer-login-container {
         margin-bottom: 2rem;
         max-width: 32rem; /* Define max-width for tablets */
@@ -517,9 +458,6 @@ body {
 
 /* Desktops and Larger Screens (min-width: 1024px) */
 @media (min-width: 1024px) {
-    body {
-        padding: 3rem; /* Restore body padding */
-    }
     .outer-login-container {
         margin-bottom: 2.5rem;
         max-width: 28rem; /* Restore desktop max-width */
