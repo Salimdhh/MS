@@ -1,0 +1,250 @@
+{# accounts/templates/user/user_list.html #}
+{% extends "base.html" %}
+{% load static %}
+{% block title %}إدارة المستخدمين{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">إدارة المستخدمين</h1>
+        {# هذا هو التغيير: العودة إلى رابط عادي يوجه إلى صفحة جديدة #}
+        <a href="{% url 'add_account' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg flex items-center transition duration-300 ease-in-out transform hover:scale-105">
+            <i class="fas fa-user-plus ml-2"></i> إضافة حساب جديد
+        </a>
+    </div>
+
+    {# منطقة البحث والفلترة (كما هي) #}
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 items-end">
+            {# حقل البحث #}
+            <div class="md:col-span-2">
+                <label for="userSearchInput" class="block text-sm font-medium text-gray-700 mb-2">البحث عن مستخدم:</label>
+                <div class="relative">
+                    <input type="text" id="userSearchInput" placeholder="ابحث بالاسم أو البريد الإلكتروني..." class="form-input-field pr-10">
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            {# فلترة حالة الحساب #}
+            <div>
+                <label for="statusFilter" class="block text-sm font-medium text-gray-700 mb-2">حالة الحساب:</label>
+                <select id="statusFilter" class="form-input-field">
+                    <option value="">الكل</option>
+                    <option value="active">نشط</option>
+                    <option value="inactive">غير نشط</option>
+                </select>
+            </div>
+
+            {# فلترة حسب المجموعة #}
+            <div>
+                <label for="groupFilter" class="block text-sm font-medium text-gray-700 mb-2">فلترة حسب المجموعة:</label>
+                <select id="groupFilter" class="form-input-field">
+                    <option value="">جميع المجموعات</option>
+                    {% for group in groups %}
+                        <option value="{{ group.pk }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    {# **التصميم الجديد للجدول** #}
+    <div class="col-12">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-800">بيانات المستخدمين</h4>
+            </div>
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <div id="userTableContainer">
+                        {# سيتم تحميل محتوى الجدول هنا بواسطة AJAX #}
+                        {% include 'user/user_table_body.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# **نهاية التصميم الجديد للجدول** #}
+
+</div>
+
+{# **حذف هذا القسم: لم نعد بحاجة إلى هيكل المودال في هذا القالب** #}
+{#
+<div id="addAccountModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    إضافة حساب مستخدم جديد
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addAccountModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">إغلاق المودال</span>
+                </button>
+            </div>
+            <div class="p-4 md:p-5">
+                <form id="addAccountForm" method="post" action="{% url 'add_account' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="flex justify-end mt-4">
+                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                            حفظ الحساب
+                        </button>
+                        <button type="button" data-modal-hide="addAccountModal" class="ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+#}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userSearchInput = $('#userSearchInput');
+        const statusFilter = $('#statusFilter');
+        const groupFilter = $('#groupFilter');
+        const userTableContainer = $('#userTableContainer');
+        // لم نعد نحتاج إلى متغيرات addAccountForm أو addAccountModalElement هنا
+        // لأننا لن نرسل النموذج عبر AJAX من هذه الصفحة.
+
+        // دالة لجلب وتحديث جدول المستخدمين (هذه ستظل تعمل لفلترة القائمة)
+        function fetchUsers() {
+            const searchQuery = userSearchInput.val();
+            const statusFilterVal = statusFilter.val();
+            const groupFilterVal = groupFilter.val();
+            $.ajax({
+                url: '{% url "user_list" %}',
+                type: 'GET',
+                data: {
+                    q: searchQuery,
+                    status: statusFilterVal,
+                    group: groupFilterVal
+                },
+                success: function(response) {
+                    userTableContainer.html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("حدث خطأ أثناء جلب المستخدمين:", error);
+                    showToast('error', 'حدث خطأ أثناء جلب البيانات. يرجى المحاولة مرة أخرى.');
+                }
+            });
+        }
+
+        // ربط الأحداث بـ fetchUsers
+        userSearchInput.on('keyup', fetchUsers);
+        statusFilter.on('change', fetchUsers);
+        groupFilter.on('change', fetchUsers);
+
+        // -----------------------------------------------------
+        // **حذف هذا القسم: لم نعد نحتاج إلى كود معالجة إرسال نموذج إضافة الحساب عبر AJAX هنا**
+        {#
+        if (addAccountForm) {
+            addAccountForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(addAccountForm);
+                fetch(addAccountForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok && response.headers.get('content-type')?.includes('text/html')) {
+                        return response.text().then(text => { throw new Error(`Server returned HTML: ${text}`); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        showToast('success', 'تم إضافة الحساب بنجاح!');
+                        if (addAccountModal) {
+                            addAccountModal.hide();
+                        }
+                        addAccountForm.reset();
+                        fetchUsers();
+                    } else {
+                        displayFormErrors(addAccountForm, data.errors);
+                        showToast('error', 'حدث خطأ في إضافة الحساب. يرجى التحقق من البيانات.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('error', 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.');
+                });
+            });
+        }
+        #}
+
+        // دالة مساعدة لعرض رسائل الأخطاء بجانب الحقول (لا تزال مفيدة إذا كنت تستخدمها لأماكن أخرى)
+        function displayFormErrors(formElement, errors) {
+            formElement.querySelectorAll('.error-message').forEach(el => el.remove());
+            formElement.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+
+            for (const fieldName in errors) {
+                const errorMessages = errors[fieldName];
+                const inputElement = formElement.querySelector(`[name="${fieldName}"]`);
+
+                if (inputElement) {
+                    inputElement.classList.add('is-invalid');
+                    const errorDiv = document.createElement('div');
+                    errorDiv.classList.add('text-red-500', 'text-sm', 'mt-1', 'error-message');
+                    errorDiv.textContent = errorMessages.join(', ');
+                    inputElement.parentNode.insertBefore(errorDiv, inputElement.nextSibling);
+                } else if (fieldName === '__all__') {
+                    showToast('error', errorMessages.join(', '));
+                }
+            }
+        }
+
+        // دالة لعرض رسائل التوست (النجاح أو الخطأ) (لا تزال مفيدة لرسائل Django messages)
+        function showToast(type, message) {
+            let messagesContainer = document.getElementById('messagesContainer');
+            if (!messagesContainer) {
+                messagesContainer = document.createElement('div');
+                messagesContainer.id = 'messagesContainer';
+                messagesContainer.classList.add('fixed', 'inset-x-0', 'top-0', 'z-50', 'p-4', 'flex', 'flex-col', 'items-center', 'pointer-events-none');
+                document.body.prepend(messagesContainer);
+            }
+
+            const alertDiv = document.createElement('div');
+            alertDiv.classList.add('message-item', 'p-3', 'mb-2', 'rounded', 'shadow-lg', 'text-white', 'text-center', 'transition-all', 'duration-300', 'ease-in-out', 'transform', 'translate-y-0', 'opacity-100');
+            alertDiv.classList.add(type === 'success' ? 'bg-green-500' : 'bg-red-500');
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="close-message absolute top-1 right-2 text-white opacity-75 hover:opacity-100 text-xl leading-none" aria-label="Close" onclick="this.closest('.message-item').remove()">
+                    &times;
+                </button>
+            `;
+            messagesContainer.prepend(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.add('opacity-0', '-translate-y-full');
+                alertDiv.addEventListener('transitionend', () => alertDiv.remove());
+            }, 5000);
+        }
+
+        // التأكد من أن جميع رسائل Django (التي تأتي من الـ backend) يتم عرضها كتوست
+        document.querySelectorAll('.django-message').forEach(messageDiv => {
+            const type = messageDiv.classList.contains('success') ? 'success' :
+                         messageDiv.classList.contains('error') ? 'error' :
+                         messageDiv.classList.contains('info') ? 'info' : 'warning';
+            const text = messageDiv.textContent.trim();
+            showToast(type, text);
+            messageDiv.remove();
+        });
+    });
+</script>
+{% endblock %}

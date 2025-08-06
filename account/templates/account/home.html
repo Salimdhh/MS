@@ -1,0 +1,587 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}نظام موارد بشرية مبتكر{% endblock %}
+
+{% block content %}
+<div class="hrm-elegance-container">
+    <section class="hero-section-elegance">
+        <div class="hero-background-art"></div>
+        <div class="hero-content-elegance">
+            <h1 class="hero-title-elegance">مستقبلك في إدارة الموارد البشرية يبدأ هنا.</h1>
+            <p class="hero-subtitle-elegance">نظام متكامل، مصمم لتبسيط مهامك اليومية، تمكين موظفيك، وتعزيز نمو شركتك.</p>
+            <a href="#" class="btn-main-elegance">اكتشف الفرق الآن <span class="arrow-icon">→</span></a>
+        </div>
+        <div class="hero-illustration">
+            <img src="{% static 'img/hrm-hero-illustration.svg' %}" alt="HR Management Illustration">
+        </div>
+    </section>
+
+    <section class="value-section-elegance">
+        <h2 class="section-heading-elegance">نقدم لك أكثر من مجرد نظام HR.</h2>
+        <p class="section-subheading-elegance">نحن نقدم حلولًا مبتكرة تحول التحديات إلى فرص، وترتقي بقسم الموارد البشرية لديك.</p>
+        
+        <div class="value-cards-grid">
+            <div class="value-card-item">
+                <div class="icon-wrapper"><img src="{% static 'img/icon-efficiency.svg' %}" alt="الكفاءة"></div>
+                <h3 class="card-title-elegance">كفاءة لا مثيل لها</h3>
+                <p class="card-description-elegance">أتمتة المهام الروتينية لتركيزك على الأهم.</p>
+            </div>
+            <div class="value-card-item">
+                <div class="icon-wrapper"><img src="{% static 'img/icon-engagement.svg' %}" alt="تفاعل الموظفين"></div>
+                <h3 class="card-title-elegance">تفاعل موظفين معزز</h3>
+                <p class="card-description-elegance">أدوات سهلة الاستخدام تشجع على المشاركة والإيجابية.</p>
+            </div>
+            <div class="value-card-item">
+                <div class="icon-wrapper"><img src="{% static 'img/icon-insights.svg' %}" alt="رؤى ذكية"></div>
+                <h3 class="card-title-elegance">رؤى ذكية لقرارات أفضل</h3>
+                <p class="card-description-elegance">تقارير وتحليلات مفصلة لدعم اتخاذ القرار الاستراتيجي.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="core-features-section">
+        <h2 class="section-heading-elegance">ميزات جوهرية لتحقيق التميز</h2>
+        
+        <div class="feature-detail-grid">
+            <div class="feature-detail-item">
+                <img src="{% static 'img/feature-recruitment.svg' %}" alt="التوظيف الشامل" class="feature-detail-img">
+                <div class="feature-detail-content">
+                    <h3 class="feature-detail-title">التوظيف الشامل والسلس</h3>
+                    <p class="feature-detail-desc">إدارة دورة التوظيف بأكملها، من إعلان الوظائف إلى متابعة المرشحين وإتمام الإجراءات، لضمان استقطاب أفضل المواهب.</p>
+                </div>
+            </div>
+            <div class="feature-detail-item reverse-layout">
+                <img src="{% static 'img/feature-performance.svg' %}" alt="تطوير الأداء المستمر" class="feature-detail-img">
+                <div class="feature-detail-content">
+                    <h3 class="feature-detail-title">تطوير الأداء المستمر</h3>
+                    <p class="feature-detail-desc">نظام تقييم مرن، تحديد أهداف واضحة، وجلسات ملاحظات فعالة لتحفيز الموظفين على النمو والابتكار.</p>
+                </div>
+            </div>
+            <div class="feature-detail-item">
+                <img src="{% static 'img/feature-payroll.svg' %}" alt="إدارة الرواتب الدقيقة" class="feature-detail-img">
+                <div class="feature-detail-content">
+                    <h3 class="feature-detail-title">إدارة الرواتب الدقيقة والآمنة</h3>
+                    <p class="feature-detail-desc">معالجة سريعة للرواتب، المكافآت، والخصومات، مع ضمان الامتثال الكامل للوائح والضرائب.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta-section">
+        <div class="cta-card">
+            <h2 class="cta-title-elegance">جاهز لثورة في قسم الموارد البشرية لديك؟</h2>
+            <p class="cta-description-elegance">دعنا نساعدك في بناء فريق أقوى، وأكثر إنتاجية، وسعادة.</p>
+            <a href="#" class="btn-secondary-elegance">احجز عرضًا توضيحيًا مجانيًا</a>
+        </div>
+    </section>
+
+</div>
+
+<style>
+  /* @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap'); /* خط عربي أنيق وواضح */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); /* خط لاتيني حديث للعناوين */
+
+:root {
+    /* لوحة الألوان المريحة للعين */
+    --primary-blue: #007bff; /* أزرق مشرق وجذاب */
+    --secondary-green: #28a745; /* أخضر مريح ومحفز */
+    --light-gray-bg: #f8f9fa; /* خلفية ناعمة جداً */
+    --text-dark: #343a40; /* لون نص داكن للقراءة */
+    --text-light-gray: #6c757d; /* لون نص رمادي فاتح */
+    --card-bg: #ffffff; /* خلفية البطاقات بيضاء نقية */
+    --accent-yellow: #ffc107; /* لمسة لونية خفيفة */
+    --shadow-light: rgba(0, 0, 0, 0.08); /* ظل خفيف للبطاقات */
+    --shadow-medium: rgba(0, 0, 0, 0.15); /* ظل متوسط عند التحويم */
+}
+
+body {
+    font-family: 'Tajawal', sans-serif; /* استخدام الخط العربي الجديد */
+    direction: rtl; /* دعم اللغة العربية */
+    text-align: right; /* محاذاة النص لليمين */
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-gray-bg);
+    color: var(--text-dark);
+    line-height: 1.7; /* مسافة أسطر مريحة */
+    scroll-behavior: smooth; /* تصفح سلس */
+}
+
+.hrm-elegance-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding-bottom: 80px;
+}
+
+/* الأقسام العامة */
+.section-heading-elegance {
+    font-family: 'Inter', sans-serif; /* خط لاتيني للعناوين الكبيرة */
+    font-size: 2.8em;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.section-subheading-elegance {
+    font-size: 1.3em;
+    color: var(--text-light-gray);
+    margin-bottom: 60px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* الأزرار */
+.btn-main-elegance,
+.btn-secondary-elegance {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 35px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-main-elegance {
+    background-color: var(--primary-blue);
+    color: var(--card-bg);
+}
+
+.btn-main-elegance:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--shadow-medium);
+}
+
+.btn-main-elegance .arrow-icon {
+    margin-right: 10px; /* مسافة بين النص والسهم */
+    font-size: 1.2em;
+    transition: margin-right 0.3s ease;
+}
+
+.btn-main-elegance:hover .arrow-icon {
+    margin-right: 15px; /* حركة طفيفة للسهم عند التحويم */
+}
+
+.btn-secondary-elegance {
+    background-color: var(--secondary-green);
+    color: var(--card-bg);
+}
+
+.btn-secondary-elegance:hover {
+    background-color: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--shadow-medium);
+}
+
+
+/* Hero Section - الواجهة الجذابة */
+.hero-section-elegance {
+    position: relative;
+    height: 600px; /* ارتفاع أكبر للوحة الافتتاحية */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* توزيع العناصر على الجانبين */
+    padding: 20px 80px; /* هوامش جانبية */
+    background: linear-gradient(to left, #e0f2f7, #fcfcfc); /* تدرج لوني خفيف للخلفية */
+    overflow: hidden;
+}
+
+.hero-background-art {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* يمكنك إضافة شكل هندسي أو نقش خفيف هنا */
+    background: url('{% static "img/abstract-shape.svg" %}') no-repeat right bottom/contain; /* شكل تجريدي في الخلفية */
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.hero-content-elegance {
+    flex: 1; /* يأخذ المساحة المتاحة */
+    max-width: 650px;
+    position: relative;
+    z-index: 1;
+    text-align: right;
+}
+
+.hero-title-elegance {
+    font-family: 'Inter', sans-serif;
+    font-size: 4em;
+    color: var(--text-dark);
+    margin-bottom: 25px;
+    line-height: 1.25;
+    font-weight: 800; /* خط ثقيل جداً */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.hero-subtitle-elegance {
+    font-size: 1.4em;
+    color: var(--text-light-gray);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.hero-illustration {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-illustration img {
+    max-width: 100%;
+    height: auto;
+    transform: translateY(0);
+    animation: floatIllustration 4s ease-in-out infinite; /* حركة عائمة خفيفة */
+}
+
+@keyframes floatIllustration {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Value Proposition Section */
+.value-section-elegance {
+    padding: 80px 20px;
+    background-color: var(--card-bg);
+    text-align: center;
+}
+
+.value-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.value-card-item {
+    background-color: var(--light-gray-bg);
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.value-card-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px var(--shadow-medium);
+}
+
+.value-card-item .icon-wrapper {
+    background-color: var(--primary-blue);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.value-card-item .icon-wrapper img {
+    width: 45px;
+    height: 45px;
+    filter: brightness(0) invert(1); /* لجعل الأيقونات بيضاء */
+}
+
+.card-title-elegance {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.8em;
+    color: var(--primary-blue);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.card-description-elegance {
+    font-size: 1.1em;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* Core Features Section */
+.core-features-section {
+    padding: 80px 20px;
+    background-color: var(--light-gray-bg);
+    text-align: center;
+}
+
+.feature-detail-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 80px; /* مسافة أكبر بين العناصر */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 50px; /* مسافة بين الصورة والمحتوى */
+    padding: 30px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-detail-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px var(--shadow-medium);
+}
+
+.feature-detail-item.reverse-layout {
+    flex-direction: row-reverse; /* عكس الترتيب للصورة والنص */
+}
+
+.feature-detail-img {
+    flex: 1;
+    max-width: 50%;
+    height: auto;
+    object-fit: contain;
+}
+
+.feature-detail-content {
+    flex: 1;
+    max-width: 50%;
+    text-align: right; /* محاذاة النص لليمين */
+}
+
+.feature-detail-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.2em;
+    color: var(--primary-blue);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.feature-detail-desc {
+    font-size: 1.15em;
+    color: var(--text-dark);
+    line-height: 1.7;
+}
+
+/* Final Call to Action Section */
+.final-cta-section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.cta-card {
+    background-color: var(--primary-blue);
+    color: var(--card-bg);
+    padding: 60px 40px;
+    border-radius: 15px;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.3);
+}
+
+.cta-title-elegance {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.8em;
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cta-description-elegance {
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .hero-section-elegance {
+        padding: 20px 40px;
+    }
+    .hero-title-elegance {
+        font-size: 3.5em;
+    }
+    .hero-subtitle-elegance {
+        font-size: 1.2em;
+    }
+    .section-heading-elegance {
+        font-size: 2.5em;
+    }
+    .section-subheading-elegance {
+        font-size: 1.1em;
+    }
+    .card-title-elegance {
+        font-size: 1.6em;
+    }
+    .card-description-elegance {
+        font-size: 1em;
+    }
+    .feature-detail-title {
+        font-size: 1.8em;
+    }
+    .feature-detail-desc {
+        font-size: 1em;
+    }
+    .cta-title-elegance {
+        font-size: 2.4em;
+    }
+    .cta-description-elegance {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-section-elegance {
+        flex-direction: column-reverse; /* تبديل الترتيب: الصورة ثم النص */
+        height: auto; /* ارتفاع تلقائي */
+        padding: 50px 20px;
+    }
+    .hero-content-elegance,
+    .hero-illustration {
+        max-width: 100%;
+        text-align: center;
+        flex: none; /* إزالة flex grow */
+    }
+    .hero-title-elegance {
+        font-size: 2.8em;
+        margin-top: 30px; /* مسافة بعد الصورة */
+    }
+    .hero-subtitle-elegance {
+        font-size: 1.1em;
+    }
+    .hero-illustration img {
+        max-width: 80%; /* تصغير الصورة قليلاً */
+    }
+    .section-heading-elegance {
+        font-size: 2.2em;
+    }
+    .section-subheading-elegance {
+        font-size: 1em;
+        margin-bottom: 40px;
+    }
+    .value-cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .feature-detail-item,
+    .feature-detail-item.reverse-layout {
+        flex-direction: column; /* تكديس عمودي */
+        gap: 30px;
+        padding: 25px;
+    }
+    .feature-detail-img {
+        max-width: 80%; /* تصغير صور الميزات */
+    }
+    .feature-detail-content {
+        max-width: 100%;
+        text-align: center;
+    }
+    .feature-detail-title {
+        font-size: 1.6em;
+    }
+    .cta-title-elegance {
+        font-size: 2em;
+    }
+    .cta-description-elegance {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title-elegance {
+        font-size: 2.2em;
+    }
+    .hero-subtitle-elegance {
+        font-size: 1em;
+    }
+    .btn-main-elegance,
+    .btn-secondary-elegance {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+    .section-heading-elegance, .cta-title-elegance {
+        font-size: 1.8em;
+    }
+    .section-subheading-elegance, .cta-description-elegance {
+        font-size: 0.9em;
+        margin-bottom: 30px;
+    }
+    .value-card-item .icon-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+    .value-card-item .icon-wrapper img {
+        width: 40px;
+        height: 40px;
+    }
+    .card-title-elegance {
+        font-size: 1.4em;
+    }
+    .card-description-elegance {
+        font-size: 0.95em;
+    }
+    .feature-detail-title {
+        font-size: 1.4em;
+    }
+    .feature-detail-desc {
+        font-size: 0.95em;
+    }
+    .cta-card {
+        padding: 40px 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section-elegance {
+        padding: 30px 15px;
+    }
+    .hero-title-elegance {
+        font-size: 1.8em;
+        line-height: 1.3;
+    }
+    .hero-subtitle-elegance {
+        font-size: 0.9em;
+        margin-bottom: 25px;
+    }
+    .btn-main-elegance,
+    .btn-secondary-elegance {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+    .value-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .feature-detail-item {
+        padding: 20px;
+        gap: 20px;
+    }
+    .feature-detail-img {
+        max-width: 70%;
+    }
+    .section-heading-elegance, .cta-title-elegance {
+        font-size: 1.5em;
+    }
+    .section-subheading-elegance, .cta-description-elegance {
+        font-size: 0.85em;
+    }
+}
+</style>
+{% endblock %}

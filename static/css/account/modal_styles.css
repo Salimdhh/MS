@@ -1,0 +1,150 @@
+
+/* ... باقي أنماط .modal-content والأزرار ... */
+/* static/css/modal_styles.css */
+/* static/css/modal_styles.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex; /* مهم جداً للتوسيط */
+    justify-content: center; /* توسيط أفقي */
+    align-items: center;    /* توسيط رأسي */
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s;
+}
+
+.modal-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ... باقي الأنماط لـ .modal-content والأزرار ... */
+.modal-content {
+    background-color: #ffffff;
+    padding: 2.5rem; /* حشوة داخلية */
+    border-radius: 0.5rem; /* حواف مستديرة */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 90%; /* عرض افتراضي */
+    max-width: 500px; /* أقصى عرض */
+    box-sizing: border-box; /* لضمان أن الحشوة لا تزيد العرض */
+    transform: translateY(-20px); /* للتحريك قليلًا عند الظهور */
+    transition: transform 0.3s ease-out;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+}
+
+.modal-header h2 {
+    font-size: 1.75rem; /* حجم العنوان */
+    font-weight: 700;
+    color: var(--text-dark); /* استخدم متغير اللون من hr_flow_style.css */
+    margin: 0;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #888;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.close-modal-btn:hover {
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.modal-body {
+    margin-bottom: 1.5rem;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* الأزرار على اليسار (في RTL) */
+    gap: 1rem; /* مسافة بين الأزرار */
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* أزرار Bootstrap-like (يمكنك تعديلها لتناسب تصميمك) */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.btn-primary {
+    background-color: #3b82f6; /* blue-500 */
+    color: #ffffff;
+    border: 1px solid #3b82f6;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb; /* blue-600 */
+    border-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #4a5568; /* gray-600 */
+    border: 1px solid #d1d5db; /* gray-300 */
+}
+
+.btn-secondary:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e0;
+}
+
+/* responsive adjustments */
+@media (max-width: 767px) {
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        border-radius: 0; /* No border-radius on small screens */
+        box-shadow: none; /* No shadow on small screens */
+        max-height: 90vh; /* Allow scrolling if content is too long */
+        overflow-y: auto; /* Enable scrolling */
+    }
+
+    .modal-header {
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-footer {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 0.75rem;
+    }
+
+    .btn {
+        width: 100%; /* Full width buttons */
+    }
+}

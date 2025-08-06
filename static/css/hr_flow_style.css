@@ -1,0 +1,1096 @@
+/* Google Fonts: Cairo (Arabic), Inter (Latin) are imported in base.html */
+
+/* Color Palette */
+:root {
+    --primary-blue: #4a90e2; /* أزرق ناعم وجذاب */
+    --secondary-green: #50e3c2; /* أخضر نعناعي مشرق */
+    --background-light: #f4f7f6; /* خلفية فاتحة جداً ومريحة */
+    --card-background: #ffffff; /* خلفية البطاقات بيضاء نقية */
+    --text-dark: #333d47; /* لون نص داكن للقراءة */
+    --text-light: #7a828e; /* لون نص رمادي فاتح */
+    --border-light: #e0e6ed; /* لون حدود خفيف */
+    --shadow-soft: rgba(0, 0, 0, 0.08); /* ظل ناعم */
+    --shadow-medium: rgba(0, 0, 0, 0.15); /* ظل متوسط */
+    --sidebar-dark: #2c3e50; /* خلفية الشريط الجانبي الداكنة */
+    --sidebar-active-link: #3b5062; /* خلفية رابط نشط في الشريط الجانبي */
+    --mobile-topbar-height: 60px; /* ارتفاع التوب بار على الموبايل */
+    --sidebar-width: 280px; /* عرض الشريط الجانبي الافتراضي */
+    --sidebar-collapsed-width: 80px; /* عرض الشريط الجانبي عند التصغير */
+}
+
+/* Base Styles */
+body {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden; /* لمنع التمرير الأفقي */
+    scroll-behavior: smooth;
+}
+
+/* General Layout & Content Area */
+.main-wrapper {
+    display: flex;
+    min-height: 100vh;
+    transition: margin-right 0.3s ease-in-out; /* للانتقال السلس للمحتوى */
+}
+
+.content-area {
+    flex-grow: 1; /* يأخذ المساحة المتبقية */
+    padding-top: 80px; /* مسافة للـ Navbar */
+    margin-right: var(--sidebar-width); /* مسافة للشريط الجانبي */
+    transition: margin-right 0.3s ease-in-out;
+}
+
+/* عندما يكون الشريط الجانبي مصغراً، يتم تقليل الهامش على المحتوى */
+body.sidebar-is-collapsed .content-area {
+    margin-right: var(--sidebar-collapsed-width);
+}
+
+/* Headings & Text */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+p {
+    font-size: 1em;
+    color: var(--text-light);
+}
+
+/* Buttons - أزرار عصرية */
+.btn-primary-flow,
+.btn-secondary-flow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px var(--shadow-soft);
+}
+
+.btn-primary-flow {
+    background-color: var(--primary-blue);
+    color: var(--card-background);
+}
+
+.btn-primary-flow:hover {
+    background-color: #3a7bd5;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px var(--shadow-medium);
+}
+
+.btn-secondary-flow {
+    background-color: var(--secondary-green);
+    color: var(--card-background);
+}
+
+.btn-secondary-flow:hover {
+    background-color: #38c8a8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px var(--shadow-medium);
+}
+
+/* Navbar - شريط التنقل العلوي */
+.hr-flow-navbar {
+    background-color: var(--card-background);
+    padding: 0 40px;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* ظل دائم خفيف */
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.hr-flow-navbar.scrolled {
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.navbar-brand-hrf {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+.navbar-brand-hrf .logo-icon {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    object-fit: contain;
+}
+
+.nav-links-hrf,
+.nav-icons-hrf {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item-hrf {
+    margin-left: 30px;
+}
+
+.nav-link-hrf {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1.05em;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link-hrf:hover {
+    color: var(--primary-blue);
+    background-color: var(--background-light);
+}
+
+.nav-link-hrf i {
+    font-size: 1.2em;
+    margin-left: 8px;
+    color: var(--text-light); /* لون أيقونات غير نشطة */
+}
+
+.nav-link-hrf:hover i {
+    color: var(--primary-blue); /* لون أيقونات عند التحويم */
+}
+
+/* Navbar Icons */
+.nav-icons-hrf .nav-item-hrf {
+    margin-left: 20px;
+    position: relative;
+}
+
+.badge-hrf {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 0.7em;
+    padding: 4px 7px;
+    border-radius: 50%;
+    color: white;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge-danger-hrf { background-color: #fa5252; }
+.badge-warning-hrf { background-color: #fab005; }
+
+/* Mobile Top Bar (Hidden by default, shown on mobile) */
+.mobile-topbar {
+    display: none; /* مخفي افتراضياً */
+    background-color: var(--sidebar-dark);
+    color: var(--card-background);
+    height: var(--mobile-topbar-height);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1001; /* أعلى من كل شيء */
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.mobile-topbar .brand-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.3em;
+}
+
+.mobile-topbar .menu-toggle {
+    background: none;
+    border: none;
+    color: var(--card-background);
+    font-size: 1.8em;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Sidebar - الشريط الجانبي */
+.hr-flow-sidebar {
+    background-color: var(--sidebar-dark);
+    color: #f8f9fa;
+    width: var(--sidebar-width); /* العرض الأساسي */
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0; /* الشريط الجانبي على اليمين */
+    z-index: 999;
+    overflow-y: auto;
+    /* transition for width and transform for smooth collapse/expand */
+    transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateX(0); /* مرئي افتراضياً على الديسكتوب */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي عند التصغير */
+    white-space: nowrap; /* لمنع التفاف النص */
+}
+
+/* حالة الشريط الجانبي المصغر (خاصة بالديسكتوب) */
+.hr-flow-sidebar.collapsed-sidebar {
+    width: var(--sidebar-collapsed-width);
+}
+
+/* Brand Logo in Sidebar */
+.sidebar-logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 0;
+    background-color: #243340;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative; /* لجعل زر التبديل يلتصق به */
+}
+
+.sidebar-logo-container .full-logo {
+    opacity: 1;
+    width: 160px; /* حجم الشعار الكامل */
+    transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+.sidebar-logo-container .icon-logo {
+    opacity: 0;
+    width: 0; /* مخفي افتراضياً */
+    transition: opacity 0.3s ease, width 0.3s ease;
+    position: absolute; /* ليكون في نفس مكان الشعار الكامل */
+}
+
+.collapsed-sidebar .sidebar-logo-container .full-logo {
+    opacity: 0;
+    width: 0;
+}
+.collapsed-sidebar .sidebar-logo-container .icon-logo {
+    opacity: 1;
+    width: 40px; /* حجم الأيقونة عند التصغير */
+    position: relative; /* ليظهر بشكل صحيح في المنتصف */
+}
+
+/* User Panel in Sidebar */
+.sidebar-user-panel {
+    display: flex;
+    flex-direction: column; /* تكديس عمودي */
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.collapsed-sidebar .sidebar-user-panel {
+    padding: 15px 0; /* بادينج أقل عند التصغير */
+}
+
+.sidebar-user-panel .profile-img-wrapper {
+    margin-bottom: 15px;
+}
+
+.collapsed-sidebar .sidebar-user-panel .profile-img-wrapper {
+    margin-bottom: 0; /* لا يوجد هامش سفلي عند التصغير */
+    display: flex; /* لضمان توسيط الصورة */
+    justify-content: center;
+    width: 100%;
+}
+
+
+.sidebar-user-panel .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-blue);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+    transition: transform 0.2s ease;
+}
+
+.collapsed-sidebar .sidebar-user-panel .profile-avatar {
+    width: 45px; /* تصغير حجم الصورة */
+    height: 45px;
+    margin: 0 auto; /* توسيط الصورة */
+}
+
+.sidebar-user-panel .profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.sidebar-user-panel .user-info {
+    text-align: center;
+}
+
+.collapsed-sidebar .sidebar-user-panel .user-info {
+    display: none; /* إخفاء اسم المستخدم عند التصغير */
+}
+
+.sidebar-user-panel .user-name {
+    color: var(--card-background);
+    text-decoration: none;
+    font-size: 1.2em;
+    font-weight: 600;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.sidebar-user-panel .user-name:hover {
+    color: var(--secondary-green);
+}
+
+/* Sidebar Menu */
+.sidebar-nav-menu {
+    padding: 20px 0;
+}
+
+.sidebar-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav-item {
+    margin-bottom: 8px;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1.05em;
+    font-weight: 500;
+}
+
+.sidebar-nav-link:hover {
+    background-color: var(--sidebar-active-link);
+    color: var(--secondary-green);
+}
+
+.sidebar-nav-link.active-link {
+    background-color: var(--primary-blue);
+    color: var(--card-background);
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+    font-weight: 600;
+}
+
+.sidebar-nav-link.active-link .nav-icon-sidebar {
+    color: var(--card-background); /* أيقونة النشطة بلون أبيض */
+}
+
+.nav-icon-sidebar {
+    font-size: 1.3em;
+    margin-left: 15px;
+    width: 25px; /* عرض ثابت لضبط المحاذاة */
+    text-align: center;
+    flex-shrink: 0;
+    color: #b0b8c4; /* لون أيقونة افتراضي */
+    transition: color 0.3s ease, margin-left 0.3s ease;
+}
+
+.sidebar-nav-link:hover .nav-icon-sidebar {
+    color: var(--secondary-green);
+}
+
+/* أنماط الروابط عند التصغير */
+.collapsed-sidebar .sidebar-nav-link {
+    padding: 12px 0; /* بادينج رأسي فقط */
+    justify-content: center; /* توسيط الأيقونات */
+}
+
+.collapsed-sidebar .sidebar-nav-link .nav-icon-sidebar {
+    margin: 0 auto; /* توسيط الأيقونة */
+}
+
+.collapsed-sidebar .sidebar-nav-link .nav-text {
+    opacity: 0;
+    width: 0; /* إخفاء النص تماماً */
+    display: none; /* الأفضل إخفاؤها تمامًا لمنع مشاكل الـ layout */
+    transition: all 0.1s ease-out; /* انتقال سريع */
+}
+
+/* زر التبديل (Collapse Toggle Button) */
+.sidebar-toggle-btn {
+    background-color: var(--sidebar-active-link);
+    color: var(--card-background);
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 50%; /* في منتصف ارتفاع الـ logo container */
+    transform: translateY(-50%); /* يرفع الزر بمقدار نصف ارتفاعه لتوسيعه بالضبط */
+    left: -18px; /* نصفه خارج الشريط الجانبي */
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: var(--primary-blue);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.collapsed-sidebar .sidebar-toggle-btn i {
+    transform: rotate(180deg); /* تدوير السهم عند التصغير */
+}
+
+/* Landing Page Specific Styles (Example - You can modify this as needed) */
+.hero-section-hrf {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px); /* ارتفاع الشاشة ناقص ارتفاع الـ Navbar */
+    padding: 40px;
+    background: linear-gradient(135deg, #e0f7fa 0%, #f4f7f6 100%);
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-content-hrf {
+    max-width: 800px;
+    z-index: 2;
+}
+
+.hero-title-hrf {
+    font-size: 4em;
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.hero-subtitle-hrf {
+    font-size: 1.5em;
+    color: var(--text-dark);
+    margin-bottom: 50px;
+    line-height: 1.5;
+}
+
+.hero-illustration-hrf {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.hero-illustration-hrf img {
+    max-width: 70%; /* حجم كبير للرسمة */
+    height: auto;
+    object-fit: contain;
+    transform: translateY(20%); /* جزء منها خارج الشاشة للعمق */
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .hr-flow-navbar {
+        padding: 0 25px;
+    }
+    .hr-flow-sidebar {
+        width: 240px; /* تعديل عرض الشريط الجانبي في الشاشات الأكبر من 992px وأصغر من 1200px */
+    }
+    .content-area {
+        margin-right: 240px; /* يجب أن يتطابق مع عرض الشريط الجانبي */
+    }
+    body.sidebar-is-collapsed .content-area {
+        margin-right: var(--sidebar-collapsed-width); /* يبقى التصغير كما هو */
+    }
+    .hero-title-hrf {
+        font-size: 3.5em;
+    }
+    .hero-subtitle-hrf {
+        font-size: 1.3em;
+    }
+    .sidebar-logo-container .full-logo {
+        width: 140px;
+    }
+    .sidebar-user-panel .profile-avatar {
+        width: 70px;
+        height: 70px;
+    }
+    .sidebar-user-panel .user-name {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 992px) {
+    /* Mobile Top Bar (Show on small screens) */
+    .mobile-topbar {
+        display: flex; /* إظهار التوب بار على الموبايل */
+    }
+
+    /* Hide Desktop Navbar */
+    .hr-flow-navbar {
+        display: none;
+    }
+
+    /* Adjust Content Area for Mobile Top Bar */
+    .content-area {
+        padding-top: var(--mobile-topbar-height);
+        margin-right: 0; /* لا يوجد هامش جانبي لأن الـ sidebar سيصبح overlay */
+    }
+
+    /* Sidebar on Mobile (Overlay) */
+    .hr-flow-sidebar {
+        width: 100%; /* الشريط الجانبي يأخذ كامل العرض على الموبايل */
+        transform: translateX(100%); /* مخفي تماماً خارج الشاشة */
+        background-color: var(--sidebar-dark); /* لضمان خلفية صلبة */
+        top: 0;
+        bottom: 0;
+        height: 100vh;
+        padding-top: var(--mobile-topbar-height); /* لتجنب التداخل مع التوب بار */
+        box-shadow: none; /* لا يوجد ظل عند إخفاءه */
+        transition: transform 0.3s ease-in-out; /* إعادة ضبط الانتقال للموبايل */
+    }
+
+    .hr-flow-sidebar.open {
+        transform: translateX(0); /* يظهر بالكامل (Overlay) */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* إضافة الظل عند فتحه */
+    }
+
+    /* إلغاء تأثير التصغير على الموبايل لأن الشريط الجانبي يصبح overlay */
+    .hr-flow-sidebar.collapsed-sidebar {
+        width: 100%;
+    }
+
+    /* إخفاء زر التصغير على الموبايل */
+    .sidebar-toggle-btn {
+        display: none;
+    }
+
+    /* إلغاء هامش المحتوى و body classes الخاصة بالتصغير على الموبايل */
+    .content-area,
+    body.sidebar-is-collapsed .content-area {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title-hrf {
+        font-size: 2.2em;
+    }
+    .hero-subtitle-hrf {
+        font-size: 1em;
+    }
+    .btn-primary-flow, .btn-secondary-flow {
+        padding: 10px 20px;
+        font-size: 0.95em;
+    }
+    .mobile-topbar .brand-name {
+        font-size: 1.1em;
+    }
+    .mobile-topbar .menu-toggle {
+        font-size: 1.6em;
+    }
+    .sidebar-user-panel .profile-avatar {
+        width: 60px;
+        height: 60px;
+    }
+    .sidebar-user-panel .user-name {
+        font-size: 1em;
+    }
+    .sidebar-nav-link {
+        font-size: 0.95em;
+        padding: 10px 15px;
+    }
+    .nav-icon-sidebar {
+        font-size: 1.2em;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hr-flow-navbar {
+        padding: 0 15px;
+    }
+    .hero-title-hrf {
+        font-size: 1.8em;
+    }
+    .hero-subtitle-hrf {
+        font-size: 0.9em;
+    }
+    .mobile-topbar {
+        height: 55px;
+        padding: 0 15px;
+    }
+    .content-area {
+        padding-top: 55px;
+    }
+    .hr-flow-sidebar {
+        padding-top: 55px;
+    }
+    .sidebar-logo-container .full-logo { /* تعديل الشعار الكامل في أصغر الشاشات */
+        width: 100px;
+    }
+    .sidebar-user-panel {
+        padding: 15px 0;
+    }
+    .sidebar-user-panel .profile-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    .sidebar-user-panel .user-name {
+        font-size: 0.9em;
+    }
+    .sidebar-nav-link {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+    .nav-icon-sidebar {
+        font-size: 1em;
+    }
+}
+
+/* ... احتفظ بجميع أكواد CSS السابقة كما هي حتى هنا ... */
+
+/* Navbar - شريط التنقل العلوي (خاص بالديسكتوب) */
+.hr-flow-navbar {
+    background-color: var(--card-background);
+    padding: 0 40px;
+    height: 80px;
+    display: flex; /* افتراضياً يظهر على الديسكتوب */
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* ظل دائم خفيف */
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.hr-flow-navbar.scrolled {
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+/* ... باقي أنماط hr-flow-navbar و nav-links-hrf و nav-icons-hrf كما هي ... */
+
+/* Mobile Top Bar (مخفي افتراضياً، يظهر على الموبايل) */
+.mobile-topbar {
+    display: none; /* مخفي افتراضياً على الديسكتوب */
+    background-color: var(--sidebar-dark);
+    color: var(--card-background);
+    height: var(--mobile-topbar-height);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1001; /* أعلى من كل شيء */
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* ظل دائم خفيف */
+    transition: all 0.3s ease-in-out;
+}
+
+.mobile-topbar.scrolled {
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.mobile-topbar .brand-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.3em;
+    color: var(--card-background); /* تأكد من لون الشعار */
+    text-decoration: none;
+}
+
+.mobile-topbar .menu-toggle {
+    background: none;
+    border: none;
+    color: var(--card-background);
+    font-size: 1.8em;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.mobile-topbar-icons {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-topbar-icon {
+    color: var(--card-background);
+    font-size: 1.2em;
+    margin-left: 15px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.mobile-topbar-icon:hover {
+    color: var(--secondary-green);
+}
+
+
+/* Sidebar - الشريط الجانبي (تعديل لسلوك الـ overlay على الموبايل) */
+.hr-flow-sidebar {
+    /* ... احتفظ بالأنماط الموجودة هنا (width, height, position, z-index, etc.) ... */
+    /* تأكد أن هذا الجزء موجود ومرتبط بمتغيرات CSS */
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    background-color: var(--sidebar-dark);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: nowrap;
+    /* الترانزيشن الخاص بالتحويل (transform) للعرض كـ overlay على الموبايل */
+    transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateX(0); /* مرئي افتراضياً على الديسكتوب */
+}
+
+/* حالة الشريط الجانبي المصغر (خاصة بالديسكتوب) */
+.hr-flow-sidebar.collapsed-sidebar {
+    width: var(--sidebar-collapsed-width);
+}
+
+/* عند فتح الشريط الجانبي كـ overlay على الموبايل */
+.hr-flow-sidebar.open {
+    transform: translateX(0); /* يظهر بالكامل (Overlay) */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* إضافة الظل عند فتحه */
+}
+
+/* ... باقي أنماط .collapsed-sidebar وما بداخلها كما هي ... */
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    /* Mobile Top Bar (Show on small screens) */
+    .mobile-topbar {
+        display: flex; /* إظهار التوب بار على الموبايل */
+    }
+
+    /* Hide Desktop Navbar */
+    .hr-flow-navbar {
+        display: none; /* إخفاء الديسكتوب ناف بار على الموبايل */
+    }
+
+    /* Adjust Content Area for Mobile Top Bar */
+    .content-area {
+        padding-top: var(--mobile-topbar-height);
+        margin-right: 0; /* لا يوجد هامش جانبي لأن الـ sidebar سيصبح overlay */
+    }
+
+    /* Sidebar on Mobile (Overlay behavior) */
+    .hr-flow-sidebar {
+        width: 100%; /* الشريط الجانبي يأخذ كامل العرض على الموبايل */
+        transform: translateX(100%); /* مخفي تماماً خارج الشاشة */
+        padding-top: var(--mobile-topbar-height); /* لتجنب التداخل مع التوب بار */
+        box-shadow: none; /* لا يوجد ظل عند إخفاءه */
+        /* لا حاجة لإعادة تعريف transition هنا إذا كان معرفاً في .hr-flow-sidebar الأساسي */
+    }
+
+    /* إلغاء تأثير التصغير على الموبايل لأن الشريط الجانبي يصبح overlay */
+    .hr-flow-sidebar.collapsed-sidebar {
+        width: 100%; /* لا يتم تصغيره، بل يغلق بالكامل (translateX(100%)) */
+    }
+
+    /* إخفاء زر التصغير على الموبايل */
+    .sidebar-toggle-btn {
+        display: none;
+    }
+
+    /* إلغاء هامش المحتوى و body classes الخاصة بالتصغير على الموبايل */
+    .content-area,
+    body.sidebar-is-collapsed .content-area {
+        margin-right: 0;
+    }
+}
+/* ... باقي أنماط @media (max-width: 768px) و @media (max-width: 576px) كما هي ... */
+
+/* YourProjectName/static/css/hr_flow_style.css */
+
+/*
+   هذا الملف مخصص لأي أنماط CSS لا يمكن تحقيقها مباشرة باستخدام فئات Tailwind CSS
+   أو للأنماط المخصصة التي تريد تجاوز Tailwind بها.
+   تأكد من أن هذا الملف يتم تحميله بعد Tailwind CSS في base.html.
+*/
+
+/* ------------------------------------------- */
+/* أنماط حقول النماذج (Form Fields) */
+/* ------------------------------------------- */
+
+/* أنماط عامة لحقول الإدخال والاختيار */
+.form-input-field {
+    /* تطبيق أنماط Tailwind CSS هنا بشكل مباشر إذا لم يتم تطبيقها عبر Django forms */
+    /* وإلا، يمكن استخدام هذا لتجاوز أو إضافة أنماط محددة */
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem; /* p-2 و p-3 */
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #4a5568; /* text-gray-700 */
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e2e8f0; /* border-gray-300 */
+    border-radius: 0.375rem; /* rounded-md */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+}
+
+/* حالة التركيز (Focus state) */
+.form-input-field:focus {
+    outline: none;
+    border-color: #63b3ed; /* border-blue-500 */
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* ring-blue-200 */
+}
+
+/* أنماط خاصة بحقول الاختيار المتعدد (Multi-select) */
+.form-multiselect {
+    min-height: 8rem; /* لجعلها قابلة للتمرير */
+    /* يمكن إضافة المزيد من الأنماط هنا إذا لزم الأمر */
+}
+
+/* أنماط لمربعات الاختيار (Checkboxes) */
+.form-checkbox {
+    /* تطبيق أنماط Tailwind هنا بشكل مباشر إذا لم يتم تطبيقها عبر Django forms */
+    height: 1.25rem; /* h-5 */
+    width: 1.25rem;  /* w-5 */
+    color: #4299e1; /* text-blue-600 */
+    border-radius: 0.25rem; /* rounded */
+    border-color: #cbd5e0; /* border-gray-400 */
+    box-shadow: none; /* إزالة أي ظل قديم */
+    /* يمكن إضافة أنماط أخرى هنا */
+}
+
+/* ------------------------------------------- */
+/* أنماط الرسائل (Messages) - غير مطلوبة إذا كنت تعتمد على Tailwind فقط و JS */
+/* ------------------------------------------- */
+
+/*
+   إذا كنت تستخدم ملف messages.html الخاص بي، فإن Tailwind CSS
+   سيتعامل مع معظم الأنماط. هذه الأنماط المخصصة هنا هي للتأكد من
+   أن حاوية الرسائل تظهر بشكل صحيح في أعلى الصفحة.
+*/
+.messages-container {
+    /* fixed, inset-x-0, top-0, z-50, p-4, flex, flex-col, items-center, pointer-events-none */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 1rem; /* p-4 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none; /* يسمح بالنقر عبره للعناصر الموجودة تحته */
+}
+
+.message-item {
+    /* p-3, mb-2, rounded, shadow-lg, text-white, text-center, transition-all, duration-300, ease-in-out, transform, translate-y-0, opacity-100 */
+    pointer-events: auto; /* يسمح بالتفاعل مع الرسالة نفسها (للإغلاق) */
+    position: relative;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    color: #fff;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    transform: translateY(0);
+    opacity: 1;
+    min-width: 250px; /* لضمان عرض كافٍ للرسالة */
+}
+
+.close-message {
+    position: absolute;
+    top: 0.25rem; /* top-1 */
+    left: 0.5rem; /* right-2 */
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.5rem; /* text-xl */
+    line-height: 1;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.close-message:hover {
+    opacity: 1;
+}
+
+/* ------------------------------------------- */
+/* أنماط الأزرار المخصصة (إذا كانت موجودة في hr_flow_scripts.js) */
+/* ------------------------------------------- */
+
+/*
+   إذا كان لديك أي أزرار أو عناصر أخرى لا يتم تطبيق فئات Tailwind عليها
+   مباشرة في HTML، يمكنك تعريف أنماطها هنا.
+   على سبيل المثال، الأزرار التي كانت تستخدم btn-primary, btn-secondary, sharp في HTML الأصلي.
+*/
+
+.btn-primary {
+    /* bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg flex items-center transition duration-300 ease-in-out transform hover:scale-105 */
+    background-color: #2563eb; /* blue-600 */
+    color: #fff;
+    font-weight: 700; /* font-bold */
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+    transform: scale(1);
+    border: none; /* إزالة الحدود الافتراضية للأزرار */
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8; /* blue-700 */
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    /* bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 */
+    background-color: #d1d5db; /* gray-300 */
+    color: #1f2937; /* gray-800 */
+    font-weight: 700; /* font-bold */
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
+    transition: all 0.3s ease-in-out;
+    transform: scale(1);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn-secondary:hover {
+    background-color: #9ca3af; /* gray-400 */
+    transform: scale(1.05);
+}
+
+/* أنماط الأزرار الحادة (Sharp buttons) إذا كانت لا تزال مستخدمة */
+.sharp {
+    border-radius: 0.25rem; /* rounded */
+    /* يمكنك تعديلها لتكون أكثر حدة إذا أردت، مثلاً 0px */
+}
+
+/* أيقونات الأزرار */
+.button-icon {
+    width: 1rem; /* w-4 */
+    height: 1rem; /* h-4 */
+    margin-right: 0.5rem; /* mr-2 */
+}
+
+/* الأيقونات في الأزرار في اتجاه RTL */
+html[dir="rtl"] .button-icon {
+    margin-right: 0; /* إلغاء الهامش الأيمن */
+    margin-left: 0.5rem; /* ml-2 */
+}
+
+/* ------------------------------------------- */
+/* أنماط Responsive Table (للتحكم في تجاوز الجدول) */
+/* ------------------------------------------- */
+
+/*
+   `overflow-x-auto` في Tailwind CSS يعتني بهذا بشكل جيد.
+   هذا فقط لتأكيد أي أنماط إضافية قد تحتاجها للجدول.
+*/
+.overflow-x-auto {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* لتحسين التمرير على iOS */
+}
+
+/* ------------------------------------------- */
+/* الأنماط العامة (مثل الخطوط، إذا لم يتم تعيينها في body class) */
+/* ------------------------------------------- */
+body {
+    font-family: 'Cairo', sans-serif; /* استخدام خط Cairo كخط أساسي */
+    /* إذا كنت تستخدم Font-sans في body class في base.html، فهذا سيتجاوزه */
+}
+
+/* ضبط اتجاه النص لجميع العناصر في الجسم لـ RTL */
+body[dir="rtl"] {
+    text-align: right;
+}
+
+/* التأكد من أن حقول الإدخال والخطوط تتبع الاتجاه الصحيح */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    direction: rtl;
+    text-align: right;
+}
+/* عكس اتجاه النص للعناصر التي تحتاج إلى نص لاتيني في RTL، مثل الأرقام أو الروابط الأجنبية */
+[dir="rtl"] .ltr-text {
+    direction: ltr;
+    text-align: left;
+}
+
+/* ------------------------------------------- */
+/* أنماط شريط التنقل والجانب (إذا كنت تستخدمها) */
+/* ------------------------------------------- */
+/* قد تحتاج إلى أنماط إضافية هنا لـ navbar.html و sidebar.html */
+/* مثال: */
+/*
+.main-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.content-area {
+    flex-grow: 1;
+    padding: 1.5rem;
+    margin-right: 18rem; // تعويض لعرض الشريط الجانبي (إذا كان ثابتًا على اليمين)
+}
+
+@media (max-width: 768px) {
+    .content-area {
+        margin-right: 0;
+        padding: 1rem;
+    }
+}
+*/

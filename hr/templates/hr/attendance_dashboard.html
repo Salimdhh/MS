@@ -1,0 +1,599 @@
+{% extends "base.html" %}
+
+{% load hr_filters %}
+
+{% block content %}
+<title>لوحة تحكم الحضور</title>
+<style>
+ body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            text-align: right;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* هذا أفضل لصفحة طويلة */
+            min-height: 100vh;
+        }
+
+        /* لتنسيق رسائل Django */
+        .message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .message.warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+
+        /* Custom styles for disabled buttons (tailwind's disabled styling is basic) */
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Custom styling for notes textarea */
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            transition: all 0.15s ease-in-out;
+        }
+        .form-group textarea:focus {
+            border-color: #3b82f6; /* blue-500 */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* focus-ring */
+        }
+
+        /* الأنماط المحددة لمكونات لوحة التحكم */
+        .container-wrapper {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 1024px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-controls h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .select-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .select-group select {
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            appearance: none;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .attendance-table thead tr {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .attendance-table th {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            text-align: right;
+            font-weight: 500;
+            color: #4b5563;
+            white-space: nowrap;
+        }
+
+        .attendance-table tbody tr {
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.1s ease-in-out;
+        }
+
+        .attendance-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .attendance-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .attendance-table td {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .status-late {
+            color: #ef4444;
+            font-weight: 500;
+        }
+        .status-early-departure {
+            color: #f59e0b;
+            font-weight: 500;
+        }
+        .status-on-time {
+            color: #22c55e;
+            font-weight: 500;
+        }
+        .status-absent {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .summary-grid {
+            margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .summary-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        .summary-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .summary-card .title {
+            font-weight: 600;
+        }
+
+        .summary-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .summary-card .description {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .bg-green-50 { background-color: #f0fdf4; }
+        .text-green-600 { color: #22c55e; }
+
+        .bg-yellow-50 { background-color: #fffbeb; }
+        .text-yellow-600 { color: #f59e0b; }
+
+        .bg-blue-50 { background-color: #eff6ff; }
+        .text-blue-600 { color: #3b82f6; }
+
+        .text-gray-600 { color: #4b5563; }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-4xl mx-auto">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }} mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-8 text-center text-gray-800">تسجيل الحضور</h2>
+                    <div class="flex flex-col items-center space-y-8">
+
+                        <form method="post" action="{% if not attendance_record or not attendance_record.check_in_time %}{% url 'check_in' %}{% else %}{% url 'check_out' %}{% endif %}" class="w-full flex flex-col items-center space-y-4">
+                            {% csrf_token %}
+
+                            {# يظهر حقل الملاحظات فقط عند تسجيل الدخول #}
+                            {% if not attendance_record or not attendance_record.check_in_time %}
+                                <div class="form-group w-full max-w-xs">
+                                    {{ form.late_notes.label_tag }}
+                                    {{ form.late_notes }}
+                                </div>
+                            {% elif not attendance_record or not attendance_record.check_out_time %}
+                                <div class="form-group w-full max-w-xs">
+                                    {{ form.early_exit_notes.label_tag }}
+                                    {{ form.early_exit_notes }}
+                                </div>
+                            {% endif %}
+
+                            <button
+                                type="submit"
+                                class="w-40 h-40 rounded-full flex items-center justify-center transition-all
+                                    {% if not attendance_record or not attendance_record.check_in_time %}
+                                        bg-blue-500 hover:bg-blue-600
+                                    {% elif attendance_record and attendance_record.check_in_time and not attendance_record.check_out_time %}
+                                        bg-red-500 hover:bg-red-600
+                                    {% else %}
+                                        bg-gray-400 cursor-not-allowed
+                                    {% endif %}"
+                                {% if attendance_record and attendance_record.check_out_time or not is_allowed_ip %}
+                                    disabled
+                                {% endif %}
+                                title="{% if not attendance_record or not attendance_record.check_in_time %}تسجيل الدخول{% elif not attendance_record.check_out_time %}تسجيل الخروج{% else %}تم تسجيل الخروج{% endif %}"
+                            >
+                                <i class="fas fa-fingerprint text-white text-6xl"></i>
+                            </button>
+
+                            <p class="text-gray-600 text-lg">
+                                {% if not attendance_record or not attendance_record.check_in_time %}
+                                    اضغط لتسجيل الدخول
+                                {% elif attendance_record and attendance_record.check_in_time and not attendance_record.check_out_time %}
+                                    اضغط لتسجيل الخروج
+                                {% elif attendance_record and attendance_record.check_out_time %}
+                                    تم تسجيل الخروج
+                                {% endif %}
+                            </p>
+                        </form>
+
+                        <div class="text-center w-full">
+                            <p class="text-3xl font-bold mb-2 text-gray-800">
+                                {% if attendance_record and attendance_record.check_in_time and attendance_record.check_out_time %}
+                                    {% with total_duration=attendance_record.check_out_time|timesince_with_seconds:attendance_record.check_in_time %}
+                                        {{ total_duration }}
+                                    {% endwith %}
+                                {% elif attendance_record and attendance_record.check_in_time %}
+                                    وقت العمل الحالي: <span id="actualWorkTime">--:--:--</span> {# سيتم تحديثه بواسطة JS #}
+                                {% else %}
+                                    --:--:--
+                                {% endif %}
+                            </p>
+                            <p class="text-gray-600">
+                                {% if attendance_record and attendance_record.check_in_time and not attendance_record.check_out_time %}
+                                    وقت العمل الحالي
+                                {% elif attendance_record and attendance_record.check_out_time %}
+                                    إجمالي وقت العمل
+                                {% else %}
+                                    اضغط للتسجيل
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6 w-full border border-gray-200">
+                            <h3 class="font-semibold mb-4 text-center text-gray-700">معلومات الدوام اليوم</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-gray-700">
+                                    <span>وقت الدخول:</span>
+                                    <span class="font-medium">
+                                        {% if attendance_record and attendance_record.check_in_time %}
+                                            {{ attendance_record.check_in_time|date:"h:i:s A" }}
+                                        {% else %}
+                                            --:--:--
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between text-gray-700">
+                                    <span>وقت الخروج المتوقع:</span>
+                                    <span class="font-medium">
+                                        {# هذا سيتطلب حسابًا في view أو قالبك #}
+                                        {% if attendance_record and attendance_record.check_in_time %}
+                                            04:00 PM {# مثال ثابت، يجب أن يتم حسابه #}
+                                        {% else %}
+                                            --:--
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between text-gray-700">
+                                    <span>الوقت الإضافي:</span>
+                                    <span class="text-green-600 font-medium">
+                                        {# هذا سيتطلب حسابًا في view أو قالبك #}
+                                        00:00
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                                     <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
+                        <h3 class="font-semibold mb-4 text-center text-gray-700">معلومات الموظف والدوام</h3>
+                        <div class="space-y-3 text-gray-700">
+                            <p class="flex justify-between items-center">
+                                <span>الموظف:</span>
+                                <strong class="text-blue-600">{{ employee.first_name }} {{ employee.last_name }}</strong>
+                            </p>
+                            <p class="flex justify-between items-center">
+                                <span>التاريخ:</span>
+                                <strong class="text-gray-800">{{ today|date:"Y-m-d" }}</strong>
+                            </p>
+                            {% if attendance_record %}
+                                {% if attendance_record.check_in_time %}
+                                    <p class="flex justify-between items-center">
+                                        <span>وقت الدخول المسجل:</span>
+                                        <strong class="text-gray-800">{{ attendance_record.check_in_time|time:"h:i:s" }}</strong>
+                                        {% if attendance_record.is_late %}
+                                            <span class="text-red-500 font-bold">(تأخير)</span>
+                                        {% endif %}
+                                    </p>
+                                {% else %}
+                                    <p class="flex justify-between items-center">
+                                        <span>وقت الدخول المسجل:</span>
+                                        <strong>لم يتم تسجيل الدخول بعد</strong>
+                                    </p>
+                                {% endif %}
+
+                                {% if attendance_record.late_notes %}
+                                        <p class="flex justify-between items-start">
+                                            <span>ملاحظة الحضور المتأخر:</span>
+                                            <em class="text-gray-600 text-sm w-2/3 text-left">{{ attendance_record.late_notes }}</em>
+                                        </p>
+                                    {% endif %}
+                                {% else %}
+                                    <p class="text-gray-600 text-center py-4">لم يتم تسجيل أي حضور لهذا اليوم.</p>
+                                {% endif %}
+
+                                {% if attendance_record.check_out_time %}
+                                    <p class="flex justify-between items-center">
+                                        <span>وقت الخروج المسجل:</span>
+                                        <strong class="text-gray-800">{{ attendance_record.check_out_time|time:"h:i:s" }}</strong>
+                                        {% if attendance_record.is_early_departure %}
+                                            <span class="text-red-500 font-bold">(مغادرة مبكرة)</span>
+                                        {% endif %}
+                                    </p>
+                                {% else %}
+                                    <p class="flex justify-between items-center">
+                                        <span>وقت الخروج المسجل:</span>
+                                        <strong>لم يتم تسجيل الخروج بعد</strong>
+                                    </p>
+                                {% endif %}
+
+                                {% if attendance_record.early_exit_notes %}
+                                        <p class="flex justify-between items-start">
+                                            <span>ملاحظة الخروج المبكر:</span>
+                                            <em class="text-gray-600 text-sm w-2/3 text-left">{{ attendance_record.early_exit_notes }}</em>
+                                        </p>
+                                {% else %}
+                                    <p class="text-gray-600 text-center py-4">لم يتم تسجيل أي حضور لهذا اليوم.</p>
+                                {% endif %}
+
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+       
+                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
+                        <h3 class="font-semibold mb-4 text-center text-gray-700">معلومات الشبكة</h3>
+                        <div class="space-y-3 text-gray-700">
+                            <p class="flex justify-between items-center">
+                                <span>عنوان IP الخاص بك:</span>
+                                <strong class="text-gray-800">{{ client_ip }}</strong>
+                            </p>
+                            {% if is_allowed_ip %}
+                                <p class="text-green-600 font-bold text-center">مسموح لك بتسجيل الحضور من هذا الـ IP.</p>
+                            {% else %}
+                                <p class="text-red-500 font-bold text-center">لا يمكنك تسجيل الحضور من هذا الـ IP.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
+                        <h4 class="font-semibold mb-4 text-center text-gray-700">معلومات الجهاز الحالي (من المتصفح):</h4>
+                        <div class="space-y-3 text-gray-700">
+                            <p class="flex justify-between items-center">
+                                <span>نظام التشغيل:</span>
+                                <strong class="text-gray-800">{{ parsed_user_agent.os }}</strong>
+                            </p>
+                            <p class="flex justify-between items-center">
+                                <span>المتصفح:</span>
+                                <strong class="text-gray-800">{{ parsed_user_agent.browser }}</strong>
+                            </p>
+                            <p class="flex justify-between items-center">
+                                <span>نوع الجهاز:</span>
+                                <strong class="text-gray-800">{{ parsed_user_agent.device_type }}</strong>
+                            </p>
+                            {% comment %}
+                                يمكنك عرض السلسلة الكاملة للمراجعة إذا أردت:
+                                <p class="text-sm">وكيل المستخدم (كامل): <code class="break-all">{{ parsed_user_agent.full_string }}</code></p>
+                            {% endcomment %}
+                        </div>
+                    </div>
+
+
+                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
+                        <div class="container-wrapper">
+                            <div class="header-controls">
+                                <h3>سجل الحضور لـ {{ employee.first_name }} {{ employee.last_name }}</h3> {# عرض اسم الموظف هنا #}
+                                <div class="select-group">
+                                    <form id="filterForm" method="GET" action="{% url 'attendance_dashboard' %}"> {# تأكد من أن 'attendance_dashboard' هو اسم الـ URL الصحيح #}
+                                        <select name="month" id="monthSelect" onchange="document.getElementById('filterForm').submit();">
+                                            {% for i in "0123456789AB"|make_list %} {# 0-11 for months #}
+                                                <option value="{{ forloop.counter }}" {% if forloop.counter == selected_month %}selected{% endif %}>
+                                                    {% comment %}
+                                                        يمكنك استخدام فلتر Django لتحويل الرقم إلى اسم الشهر العربي
+                                                        لكن لتبسيط الشرح، سنستخدم جمل if/elif/else
+                                                    {% endcomment %}
+                                                    {% if forloop.counter == 1 %}يناير{% elif forloop.counter == 2 %}فبراير{% elif forloop.counter == 3 %}مارس{% elif forloop.counter == 4 %}أبريل{% elif forloop.counter == 5 %}مايو{% elif forloop.counter == 6 %}يونيو{% elif forloop.counter == 7 %}يوليو{% elif forloop.counter == 8 %}أغسطس{% elif forloop.counter == 9 %}سبتمبر{% elif forloop.counter == 10 %}أكتوبر{% elif forloop.counter == 11 %}نوفمبر{% elif forloop.counter == 12 %}ديسمبر{% endif %}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <select name="year" id="yearSelect" onchange="document.getElementById('filterForm').submit();">
+                                            {# يمكنك إنشاء قائمة سنوات ديناميكية في الـ view أو استخدام فلتر مخصص #}
+                                            {# مثال: عرض السنوات من 2020 حتى السنة الحالية + 1 #}
+                                            {% for year in '2020'|add_current_year:current_year %} {# 'add_current_year' هو فلتر مخصص شرحناه سابقاً #}
+                                                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>
+                                                    {{ year }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <table class="attendance-table">
+                                    <thead>
+                                        <tr>
+                                            <th>التاريخ</th>
+                                            <th>الدخول</th>
+                                            <th>الخروج</th>
+                                            <th>ساعات العمل</th>
+                                            <th>الحالة</th>
+                                            <th>التأخير</th> {# أضفت عمود التأخير #}
+                                            <th>الوقت الإضافي</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% load hr_filters %} {# تأكد من تحميل الفلاتر المخصصة هنا #}
+                                        {% for record in monthly_attendance_records %} {# <--- تفعيل حلقة for هنا #}
+                                        <tr class="border-b hover:bg-gray-50">
+                                            <td class="py-3">{{ record.attendance_date|date:"Y-m-d" }}</td>
+                                            <td class="py-3">{% if record.check_in_time %}{{ record.check_in_time|time:"H:i" }}{% else %}--:--{% endif %}</td>
+                                            <td class="py-3">{% if record.check_out_time %}{{ record.check_out_time|time:"H:i" }}{% else %}--:--{% endif %}</td>
+                                            <td class="py-3">
+                                                {% if record.check_in_time and record.check_out_time %}
+                                                    {{ record.check_out_time|timesince_with_seconds:record.check_in_time }}
+                                                {% else %}
+                                                    --:--:--
+                                                {% endif %}
+                                            </td>
+                                            <td class="py-3
+                                                {% if record.is_late and record.is_early_departure %}status-late{% elif record.is_late %}status-late{% elif record.is_early_departure %}status-early-departure{% elif record.check_in_time and record.check_out_time %}status-on-time{% else %}status-absent{% endif %}
+                                            ">
+                                                {% if record.is_late and record.is_early_departure %}
+                                                    تأخير ومغادرة مبكرة
+                                                {% elif record.is_late %}
+                                                    متأخر
+                                                {% elif record.is_early_departure %}
+                                                    مغادرة مبكرة
+                                                {% elif record.check_in_time and record.check_out_time %}
+                                                    عادي
+                                                {% else %}
+                                                    غياب
+                                                {% endif %}
+                                            </td>
+                                            <td class="py-3">
+                                                {% if record.late_duration and record.late_duration.total_seconds > 0 %}
+                                                    {{ record.late_duration|timesince_with_seconds }}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                            <td class="py-3 text-green-600">
+                                                {% comment %}
+                                                    إذا كان حقل overtime_duration موجوداً ومحسوباً في النموذج، استخدمه مباشرة.
+                                                    وإلا، فإن الحساب المعقد في القالب غير عملي.
+                                                {% endcomment %}
+                                                {% if record.overtime_duration and record.overtime_duration.total_seconds > 0 %}
+                                                    {{ record.overtime_duration|timesince_with_seconds }}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="7" class="py-4 text-center text-gray-500">لا توجد سجلات حضور لهذا الشهر.</td>
+                                        </tr>
+                                        {% endfor %} {# <--- نهاية حلقة for #}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="summary-grid">
+                                <div class="summary-card bg-green-50">
+                                    <div class="title text-green-600">إجمالي ساعات العمل</div>
+                                    <div class="value">{{ total_working_hours_decimal|floatformat:2 }}</div>
+                                    <div class="description">ساعة هذا الشهر</div>
+                                </div>
+                                <div class="summary-card bg-yellow-50">
+                                    <div class="title text-yellow-600">إجمالي التأخير</div>
+                                    <div class="value">{{ total_late_duration_decimal|floatformat:2 }}</div>
+                                    <div class="description">ساعة هذا الشهر</div>
+                                </div>
+                                <div class="summary-card bg-blue-50">
+                                    <div class="title text-blue-600">إجمالي الوقت الإضافي</div>
+                                    <div class="value">{{ total_overtime_duration_decimal|floatformat:2 }}</div>
+                                    <div class="description">ساعة هذا الشهر</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        // المتغيرات من Django إلى JavaScript
+        const checkInTimeStr = "{% if attendance_record and attendance_record.check_in_time %}{{ attendance_record.check_in_time|time:'H:i:s' }}{% else %}{% endif %}";
+        const isCheckedInDjango = {% if attendance_record and attendance_record.check_in_time and not attendance_record.check_out_time %}true{% else %}false{% endif %};
+        const isCheckedOutDjango = {% if attendance_record and attendance_record.check_out_time %}true{% else %}false{% endif %};
+        
+        let intervalId; // لـ setInterval
+
+        // Function to update work time display
+        function updateWorkTime() {
+            const actualWorkTimeSpan = document.getElementById('actualWorkTime');
+            if (isCheckedInDjango && checkInTimeStr && actualWorkTimeSpan) {
+                // Ensure checkInTimeStr is not empty
+                if (!checkInTimeStr) return; 
+
+                const [h, m, s] = checkInTimeStr.split(':').map(Number);
+                const checkInDate = new Date();
+                // Set current date, then set hours/minutes/seconds from check-in time
+                checkInDate.setHours(h, m, s, 0);
+
+                const now = new Date();
+                const diffMs = now - checkInDate;
+
+                const hours = Math.floor(diffMs / (1000 * 60 * 60));
+                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+                const formattedTime = 
+                    `${String(hours).padStart(2, '0')}:` +
+                    `${String(minutes).padStart(2, '0')}:` +
+                    `${String(seconds).padStart(2, '0')}`;
+                actualWorkTimeSpan.innerText = formattedTime;
+            } else if (isCheckedOutDjango) {
+                if (actualWorkTimeSpan) {
+                    actualWorkTimeSpan.innerText = "تم الانصراف"; // Or show total worked duration from Django
+                }
+                if (intervalId) clearInterval(intervalId);
+            }
+        }
+
+        // Run once on load
+        updateWorkTime();
+        // Update every second if checked in and not checked out
+        if (isCheckedInDjango && !isCheckedOutDjango) {
+            intervalId = setInterval(updateWorkTime, 1000);
+        }
+
+        // Clear interval if user navigates away
+        window.onbeforeunload = function() {
+            if (intervalId) clearInterval(intervalId);
+        };
+    </script>
+{% endblock  %}

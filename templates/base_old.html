@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Inventory System{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="container">
+    {% block navbar %}
+    {% include 'parts/nav.html' %}
+    {% endblock %}
+    {% block sidebar %}
+    {% include 'parts/saidbar.html' %}
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+  </div>
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

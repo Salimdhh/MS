@@ -1,0 +1,56 @@
+{# accounts/templates/user/user_table_body.html #}
+{% load static %}
+<table id="example3" class="min-w-full leading-normal text-right"> {# إضافة text-right #}
+    <thead>
+        <tr class="bg-gray-100 border-b border-gray-200 text-gray-800 text-sm uppercase tracking-wider">
+            <th class="px-5 py-3 text-right"></th> {# للصور #}
+            <th class="px-5 py-3 text-right">الاسم</th>
+            <th class="px-5 py-3 text-right">القسم</th>
+            <th class="px-5 py-3 text-right">الجنس</th>
+            <th class="px-5 py-3 text-right">المؤهل</th>
+            <th class="px-5 py-3 text-right">الجوال</th>
+            <th class="px-5 py-3 text-right">البريد الإلكتروني</th>
+            <th class="px-5 py-3 text-right">تاريخ الانضمام</th>
+            <th class="px-5 py-3 text-right">الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user_obj in users %}
+        <tr class="hover:bg-gray-50 border-b border-gray-200">
+            <td class="px-5 py-5 text-sm text-gray-700">
+                {# تأكد من أن user_obj.profile.image.url موجود ومتوفر، أو استخدم صورة افتراضية #}
+                {% if user_obj.profile.image %}
+                    <img class="rounded-full w-9 h-9 object-cover" src="{{ user_obj.profile.image.url }}" alt="{{ user_obj.username }}">
+                {% else %}
+                    <img class="rounded-full w-9 h-9 object-cover" src="{% static 'img/default_profile_pic.png' %}" alt="صورة افتراضية">
+                {% endif %}
+            </td>
+            <td class="px-5 py-5 text-sm text-gray-700">{{ user_obj.first_name }} {{ user_obj.last_name }}</td> {# افتراض أن لديك first_name و last_name #}
+            <td class="px-5 py-5 text-sm text-gray-700">{% if user_obj.employee.department %}{{ user_obj.employee.department }}{% else %}-{% endif %}</td>
+            <td class="px-5 py-5 text-sm text-gray-700">{% if user_obj.employee.gender %}{{ user_obj.employee.gender }}{% else %}-{% endif %}</td>
+            <td class="px-5 py-5 text-sm text-gray-700">{% if user_obj.employee.education %}{{ user_obj.employee.education }}{% else %}-{% endif %}</td>
+            <td class="px-5 py-5 text-sm text-gray-700"><a href="tel:{{ user_obj.employee.mobile_number }}" class="text-blue-600 hover:underline">{% if user_obj.employee.mobile_number %}{{ user_obj.employee.mobile_number }}{% else %}-{% endif %}</a></td>
+            <td class="px-5 py-5 text-sm text-gray-700"><a href="mailto:{{ user_obj.email }}" class="text-blue-600 hover:underline">{% if user_obj.email %}{{ user_obj.email }}{% else %}-{% endif %}</a></td>
+            <td class="px-5 py-5 text-sm text-gray-700">{% if user_obj.date_joined %}{{ user_obj.date_joined|date:"Y/m/d" }}{% else %}-{% endif %}</td>
+            <td class="px-5 py-5 text-sm">
+                <div class="flex space-x-2 rtl:space-x-reverse"> {# للغة العربية #}
+                    <a href="{% url 'user_edit' user_obj.pk %}" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-md transition duration-200" title="تعديل">
+                        <i class="fa fa-pencil text-xs"></i>
+                    </a>
+                    {# هذا هو نموذج الحذف الصغير الذي يرسل طلب POST #}
+                    <form action="{% url 'user_delete' user_obj.pk %}" method="post" class="inline-block" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.');">
+                        {% csrf_token %} {# هذا ضروري لطلبات POST في Django #}
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-md transition duration-200" title="حذف">
+                            <i class="fa fa-trash-alt text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9" class="px-5 py-5 text-sm text-gray-500 text-center">لا يوجد مستخدمون حاليًا يطابقون معايير البحث/الفلترة.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

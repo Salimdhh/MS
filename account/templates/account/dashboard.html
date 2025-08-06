@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}لوحة التحكم{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> {# يمكن إنشاء ملف CSS خاص بلوحة التحكم #}
+
+<div class="outer-dashboard-container">
+    <h1 class="main-heading">مرحباً بك، {{ user.username }}!</h1>
+    <p class="sub-heading">هذه لوحة التحكم الخاصة بك.</p>
+
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl mx-auto">
+        <h2 class="text-2xl font-semibold mb-6 text-right text-gray-800">نظرة عامة على حسابك</h2>
+        
+        <div class="space-y-4 text-right">
+            <p class="text-gray-700"><strong>اسم المستخدم:</strong> {{ user.username }}</p>
+            {% if user.first_name %}
+                <p class="text-gray-700"><strong>الاسم الأول:</strong> {{ user.first_name }}</p>
+            {% endif %}
+            {% if user.last_name %}
+                <p class="text-gray-700"><strong>الاسم الأخير:</strong> {{ user.last_name }}</p>
+            {% endif %}
+            <p class="text-gray-700"><strong>البريد الإلكتروني:</strong> {{ user.email }}</p>
+            <p class="text-gray-700"><strong>تاريخ الانضمام:</strong> {{ user.date_joined|date:"Y-m-d" }}</p>
+            
+            {# مثال لعرض معلومات من Profile إذا كانت موجودة #}
+            {% if user.profile %}
+                {% if user.profile.date_of_birth %}
+                    <p class="text-gray-700"><strong>تاريخ الميلاد:</strong> {{ user.profile.date_of_birth|date:"Y-m-d" }}</p>
+                {% endif %}
+                {% if user.profile.photo %}
+                    <div class="mt-4">
+                        <p class="text-gray-700 mb-2"><strong>الصورة الشخصية:</strong></p>
+                        <img src="{{ user.profile.photo.url }}" alt="صورة الملف الشخصي" class="w-24 h-24 rounded-full object-cover border-2 border-blue-400 shadow-md mx-auto sm:mx-0">
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="mt-8 text-center sm:text-right space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row-reverse sm:justify-end">
+            <a href="{% url 'edit' %}" class="button-secondary">تعديل الملف الشخصي</a>
+            <a href="{% url 'password_change' %}" class="button-secondary">تغيير كلمة المرور</a>
+            <a href="{% url 'logout' %}" class="button-primary">تسجيل الخروج</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{# يمكن إضافة أي JavaScript خاص بلوحة التحكم هنا #}
+<script src="{% static 'js/script.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // رسائل الفلاش (Toast messages)
+        function showToast(message, type = 'default') {
+            const toastContainer = document.getElementById('toast-container');
+            if (!toastContainer) {
+                console.error('Toast container not found!');
+                return;
+            }
+
+            const toastDiv = document.createElement('div');
+            toastDiv.classList.add('toast');
+            if (type === 'error') {
+                toastDiv.classList.add('toast-error');
+            } else if (type === 'success') {
+                toastDiv.classList.add('toast-success');
+            } else {
+                toastDiv.classList.add('toast-default');
+            }
+            toastDiv.textContent = message;
+            toastContainer.appendChild(toastDiv);
+
+            setTimeout(() => {
+                toastDiv.classList.add('show');
+            }, 10);
+
+            setTimeout(() => {
+                toastDiv.classList.remove('show');
+                toastDiv.addEventListener('transitionend', () => toastDiv.remove(), { once: true });
+            }, 3000);
+        }
+
+        {% if messages %}
+            {% for message in messages %}
+                showToast("{{ message|escapejs }}", "{{ message.tags }}");
+            {% endfor %}
+        {% endif %}
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,515 @@
+/* General Base Styles */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: rtl; /* For Arabic text */
+    text-align: right; /* Align text to the right for RTL */
+    min-height: 100vh; /* Ensures body takes full viewport height */
+    background-color: #f3f4f6; /* Equivalent to Tailwind's gray-100 */
+    display: flex;
+    flex-direction: column; /* Allow content to stack vertically */
+    align-items: center;
+    justify-content: center;
+    padding: 1rem; /* Default padding for overall layout */
+    box-sizing: border-box; /* Include padding in element's total width/height */
+}
+
+/* Outer Container for headings and card */
+.outer-login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    width: 100%; /* Take full width */
+    max-width: 28rem; /* Max width for the entire container on larger screens */
+    margin-bottom: 2rem; /* Space below the container */
+}
+
+/* New Headings above the card */
+.main-heading {
+    font-size: 2.25rem; /* ~36px, text-4xl */
+    font-weight: 700; /* font-bold */
+    color: #1a202c; /* Equivalent to gray-900 or almost black */
+    margin-bottom: 0.5rem; /* space-y-2 */
+    text-align: center;
+}
+
+.sub-heading {
+    font-size: 1rem; /* ~16px, text-base */
+    color: #4a5568; /* Equivalent to gray-600 */
+    margin-bottom: 2rem; /* space-y-8 */
+    text-align: center;
+}
+
+/* Card Container Styles */
+.bg-white {
+    background-color: #ffffff;
+    border-radius: 0.5rem; /* 8px */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 2rem; /* Default padding inside the card */
+    width: 100%; /* Ensures it takes full width of its container */
+}
+
+/* Icon Container (Blue Circle) */
+.flex.justify-center {
+    display: flex;
+    justify-content: center;
+}
+
+.mb-8 {
+    margin-bottom: 2rem; /* 32px */
+}
+
+.w-20 {
+    width: 5rem; /* 80px */
+}
+
+.h-20 {
+    height: 5rem; /* 80px */
+}
+
+.bg-blue-500 {
+    background-color: #3b82f6; /* Equivalent to blue-500 */
+}
+
+.rounded-full {
+    border-radius: 9999px; /* Fully rounded */
+    display: flex; /* For centering icon */
+    align-items: center; /* For centering icon */
+    justify-content: center; /* For centering icon */
+}
+
+/* User Icon SVG inside the circle */
+.text-white {
+    color: #ffffff;
+}
+
+.w-12 {
+    width: 3rem; /* 48px */
+}
+
+.h-12 {
+    height: 3rem; /* 48px */
+}
+
+/* Alert/Info Boxes */
+.mb-6 {
+    margin-bottom: 1.5rem; /* 24px */
+}
+
+.p-4 {
+    padding: 1rem; /* 16px */
+}
+
+.border {
+    border-width: 1px;
+    border-style: solid;
+}
+
+.flex.items-start.gap-3 {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem; /* 12px */
+}
+
+/* Blue Info (Default credentials) - Now potentially first element after icon */
+.bg-blue-50 {
+    background-color: #eff6ff;
+}
+
+.border-blue-200 {
+    border-color: #bfdbfe;
+}
+
+.text-blue-500 {
+    color: #3b82f6;
+}
+
+.text-blue-700 {
+    color: #1d4ed8;
+}
+
+.text-blue-600 {
+    color: #2563eb;
+}
+
+/* Form Styles */
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem; /* 24px */
+}
+
+/* Label Styles */
+.block {
+    display: block;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem; /* 8px */
+}
+
+.text-gray-700 {
+    color: #374151;
+}
+
+/* Input with Icon Styles */
+.input-with-icon {
+    position: relative; /* Allows icon positioning */
+    width: 100%;
+    display: flex; /* Use flexbox to align icon and input */
+    align-items: center; /* Vertically center icon */
+}
+
+.form-input-field {
+    width: 100%; /* Input takes full width of its parent */
+    padding: 0.75rem 1rem; /* Consistent vertical and horizontal padding: 12px vertical, 16px horizontal */
+    padding-right: 2.5rem; /* Make space for the icon on the right */
+    border: 1px solid #d1d5db; /* Default border color (gray-300) */
+    border-radius: 0.5rem; /* 8px */
+    box-sizing: border-box; /* Crucial for consistent width/height */
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+    transition: all 0.15s ease-in-out; /* Smooth transitions for focus/hover */
+    color: #374151; /* Text color */
+    background-color: #ffffff;
+    text-align: right; /* Ensure text starts from the right */
+}
+
+.form-input-field::placeholder {
+    color: #9ca3af; /* Placeholder color (gray-400) */
+    text-align: right; /* Ensure placeholder starts from the right */
+}
+
+.form-input-field:focus {
+    outline: none;
+    border-color: #3b82f6; /* blue-500 */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* ring-2 with blue-500 */
+}
+
+.input-icon {
+    position: absolute; /* Position icon absolutely within its parent */
+    right: 0.75rem; /* 12px from the right edge */
+    top: 50%;
+    transform: translateY(-50%); /* Vertically center icon */
+    color: #9ca3af; /* Icon color (gray-400) */
+    width: 1.25rem; /* 20px */
+    height: 1.25rem; /* 20px */
+    pointer-events: none; /* Make icon unclickable */
+}
+
+/* "Forgot password?" link */
+.text-blue-600 {
+    color: #2563eb;
+}
+
+.hover\:underline:hover {
+    text-decoration: underline;
+}
+
+.mt-2 {
+    margin-top: 0.5rem; /* 8px */
+}
+
+/* Submit Button Styles */
+.submit-button {
+    width: 100%; /* Make them span full width */
+    padding: 0.75rem 1rem; /* Consistent vertical and horizontal padding: 12px vertical, 16px horizontal */
+    background-color: #3b82f6; /* blue-500 */
+    color: #ffffff;
+    border-radius: 0.5rem; /* 8px */
+    box-sizing: border-box; /* Crucial for consistent width/height */
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+    transition: all 0.15s ease-in-out; /* Smooth transitions for focus/hover */
+    border: none; /* Remove default button border */
+    font-weight: 500;
+    cursor: pointer;
+    display: flex; /* Use flexbox for icon and text alignment */
+    align-items: center; /* Vertically center items */
+    justify-content: center; /* Center content horizontally */
+    gap: 0.5rem; /* Space between icon and text */
+}
+
+.submit-button:hover {
+    background-color: #2563eb; /* blue-600 */
+}
+
+.submit-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #3b82f6; /* Keep blue-500 when disabled, just lower opacity */
+}
+
+.submit-button .button-icon {
+    color: #ffffff; /* Icon color (white) */
+    width: 1.25rem; /* 20px */
+    height: 1.25rem; /* 20px */
+    order: 2; /* Put icon after text in LTR, which makes it on the right in RTL */
+}
+
+.submit-button span {
+    order: 1; /* Text before icon in RTL visual flow */
+}
+
+/* "No account?" link */
+.mt-6 {
+    margin-top: 1.5rem; /* 24px */
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Toast Notification Styles */
+#toast-container {
+    position: fixed;
+    top: 1rem; /* 16px from top */
+    right: 1rem; /* 16px from right */
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align toasts to the right */
+    pointer-events: none; /* Allows clicks to pass through container */
+}
+
+.toast {
+    color: white;
+    padding: 0.75rem 1.25rem; /* 12px vertical, 20px horizontal */
+    border-radius: 0.5rem; /* 8px */
+    margin-bottom: 0.5rem; /* 8px */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    min-width: 200px;
+    max-width: 300px; /* Limit toast width */
+    text-align: right;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    pointer-events: auto; /* Make individual toasts clickable/interactable */
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.toast-default {
+    background-color: #333; /* Default dark background */
+}
+.toast-error {
+    background-color: #ef4444; /* Tailwind red-500 */
+}
+.toast-success {
+    background-color: #22c55e; /* Tailwind green-500 */
+}
+
+
+/* --- Responsive Design (Media Queries) --- */
+
+/* Adjusting padding on body for smaller screens */
+@media (max-width: 767px) { /* Applies to phones and extra small screens */
+    body {
+        padding: 0; /* Remove body padding on small screens */
+    }
+    .outer-login-container {
+        margin-bottom: 0; /* Remove bottom margin on small screens */
+        max-width: none; /* Allow container to take full width */
+    }
+    .bg-white {
+        border-radius: 0; /* Remove border-radius for full-width fill */
+        box-shadow: none; /* Remove shadow on small screens for seamless look */
+        padding: 1.5rem 1rem; /* Keep some inner padding */
+    }
+    .main-heading {
+        font-size: 1.8rem;
+        margin-top: 2rem; /* Add some top margin to heading since body padding is 0 */
+        margin-bottom: 0.25rem;
+    }
+    .sub-heading {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+    .flex.justify-center.mb-8 { /* User icon container */
+        margin-bottom: 1.5rem; /* Adjust space below user icon */
+    }
+    .p-4 { /* For alert/info boxes */
+        padding: 0.75rem;
+    }
+    .text-sm {
+        font-size: 0.8125rem;
+    }
+    .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+        margin-top: 1rem;
+    }
+    .form-input-field,
+    .submit-button {
+        padding: 0.625rem 1rem;
+        padding-right: 2.25rem; /* Adjust for icon */
+        font-size: 0.9375rem;
+    }
+    .input-icon, .button-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+        right: 0.6rem;
+    }
+    .submit-button .button-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+    .submit-button span {
+        font-size: 0.95rem;
+    }
+    .mt-2 {
+        margin-top: 0.4rem;
+    }
+    .mt-6 {
+        margin-top: 1rem; /* Adjust space below button for "No account?" link */
+    }
+    #toast-container {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    .toast {
+        max-width: calc(100% - 1rem); /* Allow toast to take almost full width */
+        padding: 0.6rem 0.9rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Extra Small Devices (up to 374px) - Further adjustments if needed */
+@media (max-width: 374px) {
+    .main-heading {
+        font-size: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    .sub-heading {
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+    .bg-white {
+        padding: 1rem 0.75rem; /* Reduced inner padding for very small screens */
+    }
+    .w-20 { /* User icon circle */
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    .w-12 { /* User icon SVG */
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .flex.justify-center.mb-8 { /* User icon container */
+        margin-bottom: 1rem;
+    }
+    .p-4 { /* For alert/info boxes */
+        padding: 0.4rem;
+    }
+    .text-sm {
+        font-size: 0.7rem;
+    }
+    .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+        margin-top: 0.75rem;
+    }
+    .form-input-field,
+    .submit-button {
+        padding: 0.4rem 0.6rem;
+        padding-right: 1.75rem; /* Adjust for icon */
+        font-size: 0.8rem;
+    }
+    .input-icon, .button-icon {
+        width: 0.9rem;
+        height: 0.9rem;
+        right: 0.4rem;
+    }
+    .submit-button .button-icon {
+        width: 1rem;
+        height: 1rem;
+    }
+    .submit-button span {
+        font-size: 0.85rem;
+    }
+    .mt-2 {
+        margin-top: 0.25rem;
+    }
+    .mt-6 {
+        margin-top: 0.75rem;
+    }
+    #toast-container {
+        top: 0.25rem;
+        right: 0.25rem;
+    }
+    .toast {
+        max-width: calc(100% - 0.5rem);
+        padding: 0.5rem 0.7rem;
+        font-size: 0.75rem;
+    }
+}
+
+
+/* Tablets (768px to 1023px) - Revert to default/tablet specific styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+    body {
+        padding: 2rem; /* Restore body padding */
+    }
+    .outer-login-container {
+        margin-bottom: 2rem;
+        max-width: 32rem; /* Define max-width for tablets */
+    }
+    .bg-white {
+        border-radius: 0.5rem; /* Restore border-radius */
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Restore shadow */
+        padding: 2rem; /* Restore inner padding */
+    }
+    .main-heading {
+        font-size: 2.15rem;
+        margin-top: initial; /* Reset top margin */
+        margin-bottom: 0.5rem;
+    }
+    .sub-heading {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+    .flex.justify-center.mb-8 {
+        margin-bottom: 2rem;
+    }
+    .form-input-field {
+        padding-right: 2.5rem;
+    }
+    .mt-6 {
+        margin-top: 1.5rem;
+    }
+}
+
+/* Desktops and Larger Screens (min-width: 1024px) */
+@media (min-width: 1024px) {
+    body {
+        padding: 3rem; /* Restore body padding */
+    }
+    .outer-login-container {
+        margin-bottom: 2.5rem;
+        max-width: 28rem; /* Restore desktop max-width */
+    }
+    .bg-white {
+        border-radius: 0.5rem; /* Restore border-radius */
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Restore shadow */
+        padding: 2.5rem; /* Restore inner padding */
+    }
+    .main-heading {
+        font-size: 2.25rem;
+        margin-top: initial; /* Reset top margin */
+        margin-bottom: 0.5rem;
+    }
+    .sub-heading {
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+    }
+    .flex.justify-center.mb-8 {
+        margin-bottom: 2rem;
+    }
+    .form-input-field {
+        padding-right: 2.5rem;
+    }
+    .mt-6 {
+        margin-top: 1.5rem;
+    }
+}

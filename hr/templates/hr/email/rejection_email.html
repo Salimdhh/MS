@@ -1,0 +1,65 @@
+{% comment %} <p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    عزيزي/عزيزتي {{ permission_request.employee.user.get_full_name }}،
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    نأسف لإعلامك بأنه قد <strong style="color: red;">تم رفض</strong> طلب الإذن الخاص بك.
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    <strong style="color: #0056b3;">تفاصيل الطلب:</strong><br>
+    <strong>نوع الطلب:</strong> {{ permission_request.get_request_type_display }}<br>
+    <strong>التاريخ:</strong> {{ permission_request.request_date|date:"Y-m-d" }} ({{ permission_request.request_day }})<br>
+    <strong>الوقت:</strong> من {{ permission_request.start_time|time:"H:i" }} إلى {{ permission_request.end_time|time:"H:i" }}<br>
+    <strong>البيان/السبب:</strong> {{ permission_request.reason }}<br>
+    {% if permission_request.location %}
+    <strong>الموقع:</strong> {{ permission_request.location }}<br>
+    {% endif %}
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    <strong>ملاحظات الرفض (إن وجدت):</strong><br>
+    {% if permission_request.hr_status == 'REJECTED' %}
+        {{ permission_request.hr_notes|default:"لا توجد ملاحظات محددة من شؤون الموظفين." }}
+    {% elif permission_request.department_manager_status == 'REJECTED' %}
+        {{ permission_request.department_manager_notes|default:"لا توجد ملاحظات محددة من مدير الإدارة." }}
+    {% elif permission_request.direct_manager_status == 'REJECTED' %}
+        {{ permission_request.direct_manager_notes|default:"لا توجد ملاحظات محددة من المسؤول المباشر." }}
+    {% else %}
+        لا توجد ملاحظات محددة للرفض في هذه المرحلة.
+    {% endif %}
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    إذا كانت لديك أي استفسارات، يرجى التواصل مع قسم الموارد البشرية.
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    مع خالص التقدير،<br>
+    فريق {{ settings.SITE_NAME|default:"نظام إدارة الموارد البشرية" }}
+</p> {% endcomment %}
+
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    عزيزي/عزيزتي {{ permission_request.employee.user.get_full_name }}،
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    نأسف لإعلامك بأنه قد <strong style="color: red;">تم رفض</strong> طلب الإذن الخاص بك.
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    <strong style="color: #0056b3;">تفاصيل الطلب:</strong><br>
+    <strong>نوع الطلب:</strong> {{ permission_request.get_request_type_display }}<br>
+    {# ... باقي تفاصيل الطلب ... #}
+    {% if permission_request.location %}
+    <strong>الموقع:</strong> {{ permission_request.location }}<br>
+    {% endif %}
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    <strong>ملاحظات الرفض:</strong><br>
+    {% if notes %}
+        {{ notes }} {# ملاحظات الرفض المحددة التي تم تمريرها #}
+    {% else %}
+        لا توجد ملاحظات محددة للرفض في هذه المرحلة.
+    {% endif %}
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    إذا كانت لديك أي استفسارات، يرجى التواصل مع قسم الموارد البشرية.
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    مع خالص التقدير،<br>
+    فريق {{ site_name|default:"نظام إدارة الموارد البشرية" }}
+</p>

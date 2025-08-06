@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">تفاصيل طلب الإذن</h2>
+
+    {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="p-3 mb-2 text-sm {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %} rounded" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="bg-gray-50 p-4 rounded-md mb-6">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">معلومات الطلب:</h3>
+        <p><strong>الموظف:</strong> {{ request_details.employee.user.get_full_name }}</p>
+        <p><strong>الوظيفة:</strong> {{ request_details.employee.position }}</p>
+        <p><strong>الإدارة:</strong> {{ request_details.employee.department.name|default:"غير محدد" }}</p>
+        <p><strong>نوع الطلب:</strong> {{ request_details.get_request_type_display }}</p>
+        <p><strong>التاريخ:</strong> {{ request_details.request_date|date:"Y-m-d" }} ({{ request_details.request_day }})</p>
+        <p><strong>الوقت من:</strong> {{ request_details.start_time|time:"H:i" }}</p>
+        <p><strong>الوقت إلى:</strong> {{ request_details.end_time|time:"H:i" }}</p>
+        <p><strong>البيان/السبب:</strong> {{ request_details.reason }}</p>
+        {% if request_details.location %}
+        <p><strong>الموقع:</strong> {{ request_details.location }}</p>
+        {% endif %}
+        <p><strong>مقدم الطلب:</strong> {{ request_details.requester_name }}</p>
+        <p><strong>تاريخ التقديم:</strong> {{ request_details.created_at|date:"Y-m-d H:i" }}</p>
+    </div>
+
+    <div class="bg-white p-4 rounded-md border border-gray-200 mb-6">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">حالة الموافقات:</h3>
+        <ul class="list-disc list-inside space-y-2">
+            <li>
+                <strong>المسؤول المباشر:</strong> 
+                <span class="px-2 py-1 rounded-full text-xs font-semibold 
+                    {% if request_details.direct_manager_status == 'APPROVED' %}bg-green-100 text-green-800{% elif request_details.direct_manager_status == 'REJECTED' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                    {{ request_details.get_direct_manager_status_display }}
+                </span>
+                {% if request_details.direct_manager_approved_at %}
+                    (بتاريخ: {{ request_details.direct_manager_approved_at|date:"Y-m-d H:i" }})
+                {% endif %}
+                {% if request_details.direct_manager_notes %}
+                    <p class="text-sm text-gray-600 ml-4">ملاحظات: {{ request_details.direct_manager_notes }}</p>
+                {% endif %}
+            </li>
+            <li>
+                <strong>مدير الإدارة:</strong> 
+                <span class="px-2 py-1 rounded-full text-xs font-semibold 
+                    {% if request_details.department_manager_status == 'APPROVED' %}bg-green-100 text-green-800{% elif request_details.department_manager_status == 'REJECTED' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                    {{ request_details.get_department_manager_status_display }}
+                </span>
+                {% if request_details.department_manager_approved_at %}
+                    (بتاريخ: {{ request_details.department_manager_approved_at|date:"Y-m-d H:i" }})
+                {% endif %}
+                {% if request_details.department_manager_notes %}
+                    <p class="text-sm text-gray-600 ml-4">ملاحظات: {{ request_details.department_manager_notes }}</p>
+                {% endif %}
+            </li>
+            <li>
+                <strong>شؤون الموظفين:</strong> 
+                <span class="px-2 py-1 rounded-full text-xs font-semibold 
+                    {% if request_details.hr_status == 'APPROVED' %}bg-green-100 text-green-800{% elif request_details.hr_status == 'REJECTED' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                    {{ request_details.get_hr_status_display }}
+                </span>
+                {% if request_details.hr_approved_at %}
+                    (بتاريخ: {{ request_details.hr_approved_at|date:"Y-m-d H:i" }})
+                {% endif %}
+                {% if request_details.hr_notes %}
+                    <p class="text-sm text-gray-600 ml-4">ملاحظات: {{ request_details.hr_notes }}</p>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+
+    {# نموذج الموافقة/الرفض #}
+    {% if can_approve_direct_manager or can_approve_department_manager or can_approve_hr %}
+        <h3 class="text-lg font-medium text-gray-800 mb-2">إجراء الموافقة:</h3>
+        <form method="post" action="{% url 'approve_permission_request' pk=request_details.pk %}" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="notes" class="block text-sm font-medium text-gray-700">ملاحظات (اختياري):</label>
+                <textarea id="notes" name="notes" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+            </div>
+            <div class="flex space-x-4">
+                <button type="submit" name="action" value="approve" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    موافقة
+                </button>
+                <button type="submit" name="action" value="reject" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    رفض
+                </button>
+            </div>
+        </form>
+    {% elif request_details.is_fully_approved %}
+        <p class="p-3 bg-green-100 text-green-700 rounded-md">تمت الموافقة النهائية على هذا الطلب.</p>
+    {% elif request_details.is_rejected_at_any_stage %}
+        <p class="p-3 bg-red-100 text-red-700 rounded-md">تم رفض هذا الطلب في إحدى المراحل.</p>
+    {% else %}
+        <p class="p-3 bg-blue-100 text-blue-700 rounded-md">الطلب في انتظار الموافقة من المرحلة التالية.</p>
+    {% endif %}
+
+    <div class="mt-6">
+        <a href="{% url 'permission_request_list' %}" class="text-indigo-600 hover:text-indigo-900">العودة إلى قائمة الطلبات</a>
+    </div>
+</div>
+{% endblock %}

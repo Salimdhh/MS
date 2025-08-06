@@ -1,0 +1,101 @@
+{% load static %}
+<aside class="hr-flow-sidebar" id="hrFlowSidebar">
+    <div class="sidebar-logo-container">
+        <a href="{% url 'home' %}" class="sidebar-brand">
+            <img class="logo-img full-logo" src="{% static 'img/full-logo.svg' %}" alt="HR-Flow Full Logo">
+            <img class="logo-img icon-logo" src="{% static 'img/logo-icon.svg' %}" alt="HR-Flow Icon Logo">
+        </a>
+    </div>
+
+    <button class="sidebar-toggle-btn" id="sidebarToggle">
+        <i class="fas fa-angle-right"></i> {# أيقونة سهم للإشارة للاتجاه #}
+    </button>
+
+    <div class="sidebar-inner">
+        {% if request.user.is_authenticated %}
+        <div class="sidebar-user-panel">
+            <div class="profile-img-wrapper">
+                <a href="#">
+                    <img src="#" 
+                         class="profile-avatar" alt="صورة المستخدم" 
+                         onerror="this.src='{% static 'img/default-avatar.png' %}'">
+                </a>
+            </div>
+            <div class="user-info">
+                <a href="#" class="user-name">{{ request.user.username }}</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <nav class="sidebar-nav-menu">
+            <ul class="sidebar-nav-list">
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link active-link">
+                        <i class="nav-icon-sidebar fas fa-tachometer-alt"></i>
+                        <span class="nav-text">لوحة التحكم</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="{% url "group_list" %}" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-users-cog"></i>
+                        <span class="nav-text">إدارةالصلاحيات</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="{% url "user_list" %}" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-users-cog"></i>
+                        <span class="nav-text">إدارة الحسابات</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="{% url "attendance_dashboard" %}" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-user-check"></i>
+                        <span class="nav-text">التحضير</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-nav-item">
+                    <a href="{% url "request_permission" %}" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-paper-plane ml-2"></i>
+                        <span class="nav-text">طلب الاذن</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-file-invoice-dollar"></i>
+                        <span class="nav-text">الرواتب</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-handshake"></i>
+                        <span class="nav-text">التوظيف</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-chart-line"></i>
+                        <span class="nav-text">التقارير والإحصائيات</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="nav-icon-sidebar fas fa-cogs"></i>
+                        <span class="nav-text">الإعدادات</span>
+                    </a>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li class="sidebar-nav-item mobile-only-logout">
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="sidebar-nav-link logout-btn-sidebar">
+                            <i class="nav-icon-sidebar fas fa-sign-out-alt"></i>
+                            <span class="nav-text">تسجيل الخروج</span>
+                        </button>
+                    </form>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</aside>

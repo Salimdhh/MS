@@ -1,0 +1,114 @@
+{% extends 'base.html' %} {# تأكد من أن لديك قالب أساسي #}
+{% load static %}
+
+{% block content %}
+
+<div class="container mx-auto p-6 bg-white shadow-md rounded-lg">
+     <div class="flex items-center justify-between mb-6">
+        <a href="{% url 'permission_request_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg flex items-center transition duration-300 ease-in-out transform hover:scale-105">
+            <i class="fas fa-user-check ml-2 text-green-600"></i>
+            <i class="fas fa-envelope-open-text ml-2 text-green-600"></i>
+             طلبات الإذن والموافقات
+        </a>
+    </div>
+
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">تقديم طلب إذن / مهمة عمل</h2>
+
+    {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="p-3 mb-2 text-sm {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %} rounded" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+
+        {# معلومات الموظف (للقراءة فقط) #}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label for="id_employee_name" class="block text-sm font-medium text-gray-700">اسم الموظف</label>
+                {{ form.employee_name }}
+            </div>
+            <div>
+                <label for="id_employee_position" class="block text-sm font-medium text-gray-700">الوظيفة</label>
+                {{ form.employee_position }}
+            </div>
+            <div>
+                <label for="id_employee_department" class="block text-sm font-medium text-gray-700">الإدارة</label>
+                {{ form.employee_department }}
+            </div>
+        </div>
+
+        {# حقول الطلب الرئيسية #}
+        <div>
+            <label for="{{ form.request_type.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.request_type.label }}</label>
+            {{ form.request_type }}
+            {% if form.request_type.errors %}<p class="text-red-500 text-xs mt-1">{{ form.request_type.errors }}</p>{% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label for="{{ form.request_date.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.request_date.label }}</label>
+                {{ form.request_date }}
+                {% if form.request_date.errors %}<p class="text-red-500 text-xs mt-1">{{ form.request_date.errors }}</p>{% endif %}
+            </div>
+            <div>
+                <label for="{{ form.start_time.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.start_time.label }}</label>
+                {{ form.start_time }}
+                {% if form.start_time.errors %}<p class="text-red-500 text-xs mt-1">{{ form.start_time.errors }}</p>{% endif %}
+            </div>
+            <div>
+                <label for="{{ form.end_time.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.end_time.label }}</label>
+                {{ form.end_time }}
+                {% if form.end_time.errors %}<p class="text-red-500 text-xs mt-1">{{ form.end_time.errors }}</p>{% endif %}
+            </div>
+        </div>
+
+        <div>
+            <label for="{{ form.reason.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.reason.label }}</label>
+            {{ form.reason }}
+            {% if form.reason.errors %}<p class="text-red-500 text-xs mt-1">{{ form.reason.errors }}</p>{% endif %}
+        </div>
+
+        <div id="location-field-container" class="{% if form.instance.request_type.value != 'BUSINESS_TRIP' and not form.is_bound %}hidden{% endif %}"> {# إخفاء افتراضيًا #}
+            <label for="{{ form.location.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.location.label }}</label>
+            {{ form.location }}
+            {% if form.location.errors %}<p class="text-red-500 text-xs mt-1">{{ form.location.errors }}</p>{% endif %}
+        </div>
+
+        <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            تقديم الطلب
+        </button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const requestTypeSelect = document.getElementById('id_request_type');
+        const locationFieldContainer = document.getElementById('location-field-container');
+        const locationInput = document.getElementById('id_location');
+
+        function toggleLocationField() {
+            if (requestTypeSelect.value === 'BUSINESS_TRIP') {
+                locationFieldContainer.classList.remove('hidden');
+                locationInput.setAttribute('required', 'required'); // جعل الحقل مطلوبًا
+            } else {
+                locationFieldContainer.classList.add('hidden');
+                locationInput.removeAttribute('required'); // إزالة المطلوب
+                locationInput.value = ''; // مسح القيمة عند الإخفاء
+            }
+        }
+
+        requestTypeSelect.addEventListener('change', toggleLocationField);
+
+        // قم بتشغيل الوظيفة عند التحميل الأولي في حالة وجود بيانات مسبقة (مثل أخطاء التحقق)
+        toggleLocationField();
+    });
+</script>
+
+{% endblock %}

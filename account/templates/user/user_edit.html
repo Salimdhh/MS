@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}تعديل المستخدم: {{ user_obj.username }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">تعديل المستخدم: {{ user_obj.username }}</h1>
+
+    <div class="bg-white shadow-md rounded-lg p-8">
+        <form method="post">
+            {% csrf_token %}
+
+            {# User Profile Section #}
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">بيانات المستخدم الأساسية</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div>
+                    <label for="{{ user_form.username.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">اسم المستخدم:</label>
+                    {{ user_form.username }}
+                    {% if user_form.username.errors %}<p class="text-red-500 text-xs mt-1">{{ user_form.username.errors }}</p>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ user_form.first_name.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">الاسم الأول:</label>
+                    {{ user_form.first_name }}
+                    {% if user_form.first_name.errors %}<p class="text-red-500 text-xs mt-1">{{ user_form.first_name.errors }}</p>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ user_form.last_name.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">الاسم الأخير:</label>
+                    {{ user_form.last_name }}
+                    {% if user_form.last_name.errors %}<p class="text-red-500 text-xs mt-1">{{ user_form.last_name.errors }}</p>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ user_form.email.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">البريد الإلكتروني:</label>
+                    {{ user_form.email }}
+                    {% if user_form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ user_form.email.errors }}</p>{% endif %}
+                </div>
+                <div class="col-span-full">
+                    <label class="inline-flex items-center cursor-pointer">
+                        {{ user_form.is_active }}
+                        <span class="mr-2 text-sm font-medium text-gray-900">حساب نشط</span>
+                    </label>
+                    {% if user_form.is_active.errors %}<p class="text-red-500 text-xs mt-1">{{ user_form.is_active.errors }}</p>{% endif %}
+                </div>
+                <div class="col-span-full">
+                    <label class="inline-flex items-center cursor-pointer">
+                        {{ user_form.is_staff }}
+                        <span class="mr-2 text-sm font-medium text-gray-900">وصول للوحة الإدارة</span>
+                    </label>
+                    {% if user_form.is_staff.errors %}<p class="text-red-500 text-xs mt-1">{{ user_form.is_staff.errors }}</p>{% endif %}
+                </div>
+            </div>
+
+            {# Groups Section #}
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">إدارة المجموعات والصلاحيات</h2>
+            <div class="mb-8">
+                <label class="block text-right mb-2 text-sm font-medium text-gray-700">{{ user_form.groups.label }}</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {% for choice in user_form.groups %}
+                        <label class="inline-flex items-center text-sm font-medium text-gray-700 cursor-pointer">
+                            {{ choice.tag }}
+                            <span class="mr-2">{{ choice.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                {% if user_form.groups.errors %}<p class="text-red-500 text-xs mt-1">{{ user_form.groups.errors }}</p>{% endif %}
+            </div>
+
+            {# Employee Profile Section (Conditional) #}
+            {% if employee_form %}
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">بيانات الموظف</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label for="{{ employee_form.employee_id.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">الرقم الوظيفي:</label>
+                        {{ employee_form.employee_id }}
+                        {% if employee_form.employee_id.errors %}<p class="text-red-500 text-xs mt-1">{{ employee_form.employee_id.errors }}</p>{% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ employee_form.department.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">الإدارة:</label>
+                        {{ employee_form.department }}
+                        {% if employee_form.department.errors %}<p class="text-red-500 text-xs mt-1">{{ employee_form.department.errors }}</p>{% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ employee_form.position.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">المنصب:</label>
+                        {{ employee_form.position }}
+                        {% if employee_form.position.errors %}<p class="text-red-500 text-xs mt-1">{{ employee_form.position.errors }}</p>{% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ employee_form.hire_date.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">تاريخ التعيين:</label>
+                        {{ employee_form.hire_date }}
+                        {% if employee_form.hire_date.errors %}<p class="text-red-500 text-xs mt-1">{{ employee_form.hire_date.errors }}</p>{% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Change Password Section #}
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">تغيير كلمة المرور</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div>
+                    <label for="{{ admin_password_form.new_password1.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">كلمة المرور الجديدة:</label>
+                    {{ admin_password_form.new_password1 }}
+                    {% if admin_password_form.new_password1.errors %}<p class="text-red-500 text-xs mt-1">{{ admin_password_form.new_password1.errors }}</p>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ admin_password_form.new_password2.id_for_label }}" class="block text-right mb-2 text-sm font-medium text-gray-700">تأكيد كلمة المرور الجديدة:</label>
+                    {{ admin_password_form.new_password2 }}
+                    {% if admin_password_form.new_password2.errors %}<p class="text-red-500 text-xs mt-1">{{ admin_password_form.new_password2.errors }}</p>{% endif %}
+                </div>
+                {% if admin_password_form.non_field_errors %}
+                    <div class="col-span-full">
+                        {% for error in admin_password_form.non_field_errors %}
+                            <p class="text-red-500 text-xs mt-1 text-right">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="flex justify-start gap-4">
+                <button type="submit" class="submit-button" name="save_all_changes">
+                    <span>حفظ التغييرات</span>
+                    <svg class="button-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <a href="{% url 'user_list' %}" class="btn-secondary">
+                    <span>إلغاء</span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

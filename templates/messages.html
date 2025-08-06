@@ -1,0 +1,30 @@
+{# templates/messages.html أو accounts/templates/accounts/messages.html #}
+{% if messages %}
+    <div class="messages-container fixed inset-x-0 top-0 z-50 p-4 flex flex-col items-center pointer-events-none">
+        {% for message in messages %}
+            <div class="message-item p-3 mb-2 rounded shadow-lg text-white text-center transition-all duration-300 ease-in-out transform translate-y-0 opacity-100
+                        {% if message.tags == 'error' %}bg-red-500
+                        {% elif message.tags == 'success' %}bg-green-500
+                        {% elif message.tags == 'info' %}bg-blue-500
+                        {% elif message.tags == 'warning' %}bg-yellow-500 text-gray-800
+                        {% else %}bg-gray-700{% endif %}"
+                 role="alert">
+                {{ message }}
+                <button type="button" class="close-message absolute top-1 right-2 text-white opacity-75 hover:opacity-100 text-xl leading-none" aria-label="Close" onclick="this.closest('.message-item').remove()">
+                    &times;
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageItems = document.querySelectorAll('.message-item');
+            messageItems.forEach(function(item) {
+                setTimeout(() => {
+                    item.classList.add('opacity-0', '-translate-y-full'); 
+                    item.addEventListener('transitionend', () => item.remove()); 
+                }, 5000);
+            });
+        });
+    </script>
+{% endif %}

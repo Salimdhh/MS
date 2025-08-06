@@ -1,0 +1,23 @@
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    عزيزي/عزيزتي {{ permission_request.employee.user.get_full_name }}،
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    يسعدنا إعلامك بأنه قد <strong style="color: green;">تمت الموافقة النهائية</strong> على طلب الإذن الخاص بك.
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    <strong style="color: #0056b3;">تفاصيل الطلب:</strong><br>
+    <strong>نوع الطلب:</strong> {{ permission_request.get_request_type_display }}<br>
+    <strong>التاريخ:</strong> {{ permission_request.request_date|date:"Y-m-d" }} ({{ permission_request.request_day }})<br>
+    <strong>الوقت:</strong> من {{ permission_request.start_time|time:"H:i" }} إلى {{ permission_request.end_time|time:"H:i" }}<br>
+    <strong>البيان/السبب:</strong> {{ permission_request.reason }}<br>
+    {% if permission_request.location %}
+    <strong>الموقع:</strong> {{ permission_request.location }}<br>
+    {% endif %}
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    يمكنك مراجعة تفاصيل طلبك من خلال نظام إدارة الموارد البشرية.
+</p>
+<p dir="rtl" style="text-align: right; font-family: 'Arial', sans-serif; color: #333;">
+    مع خالص التقدير،<br>
+    فريق {{ settings.SITE_NAME|default:"نظام إدارة الموارد البشرية" }}
+</p>

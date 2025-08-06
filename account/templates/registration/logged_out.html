@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR-Flow - تم تسجيل الخروج</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/hr_flow_style.css' %}"> {# For utility classes and variables #}
+    <link rel="stylesheet" href="{% static 'css/login_page.css' %}"> {# Contains the centering logic and responsive adjustments #}
+    <style>
+        /* Specific styles for the logged out success page if needed, otherwise login_page.css handles centering */
+        /* Re-using .outer-login-container and .bg-white to maintain consistency */
+        /* The .outer-login-container in login_page.css is already designed to center content. */
+        /* We just need to make sure the internal card looks good. */
+
+        .logged-out-card {
+            text-align: center;
+            /* max-width is handled by .outer-login-container or .bg-white if it's the actual card */
+            /* If you want this specifically to be the card, move max-width, shadow, etc. here */
+            background-color: #ffffff; /* Ensure white background */
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Shadow */
+            padding: 2.5rem; /* Internal padding */
+            width: 100%; /* Take full width of parent */
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        .logged-out-card h1 {
+            font-size: 2.25rem; /* Match main-heading size */
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+
+        .logged-out-card p {
+            font-size: 1rem;
+            color: #4a5568;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .logged-out-card a {
+            color: #2563eb; /* blue-600 */
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .logged-out-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments for the card content to match login_page.css */
+        @media (max-width: 767px) {
+            .logged-out-card {
+                border-radius: 0;
+                box-shadow: none;
+                padding: 1.5rem 1rem;
+                /* No need for width: calc(100% - 2rem); margin: 0 1rem; if .bg-white is still used as the main card */
+            }
+            .logged-out-card h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.75rem;
+            }
+            .logged-out-card p {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 374px) {
+            .logged-out-card {
+                padding: 1rem 0.75rem;
+            }
+            .logged-out-card h1 {
+                font-size: 1.5rem;
+            }
+            .logged-out-card p {
+                font-size: 0.8rem;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    {# The outer-login-container and its styles from login_page.css handle the full-screen centering #}
+    <div class="outer-login-container">
+        {# Using a div with general card styling to contain the message #}
+        {# This div will be the actual "card" that gets centered by .outer-login-container #}
+        <div class="logged-out-card">
+            <h1>لقد تم تسجيل خروجك بنجاح.</h1>
+            <p>
+                يمكنك الآن <a href="{% url 'login' %}">تسجيل الدخول مرة أخرى</a>.
+            </p>
+            <p class="text-sm text-gray-600">
+                شكرًا لاستخدامك HR-Flow.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

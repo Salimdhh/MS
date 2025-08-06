@@ -1,0 +1,150 @@
+/* static/css/dashboard.css */
+
+.outer-dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #f3f4f6; /* لون خلفية فاتح */
+    text-align: right; /* لمحاذاة النص لليمين بشكل افتراضي */
+}
+
+.main-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1a202c; /* لون داكن للعنوان الرئيسي */
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.sub-heading {
+    font-size: 1.125rem;
+    color: #4a5568; /* لون أغمق للعنوان الفرعي */
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.bg-white {
+    background-color: #fff;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.shadow-xl {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.p-8 {
+    padding: 2rem;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.max-w-2xl {
+    max-width: 42rem; /* 672px */
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* الأنماط الخاصة بالزر */
+.button-primary,
+.button-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none; /* إزالة خط تحت الروابط */
+    cursor: pointer;
+    border: 1px solid transparent; /* لجعل الحدود متسقة */
+}
+
+.button-primary {
+    background-color: #ef4444; /* أحمر (مثال لزر الخروج) */
+    color: #fff;
+    order: 1; /* لجعل زر الخروج يظهر أولاً في flex-row-reverse */
+}
+
+.button-primary:hover {
+    background-color: #dc2626;
+}
+
+.button-secondary {
+    background-color: #4f46e5; /* أزرق داكن (مثال لزر التعديل/تغيير كلمة المرور) */
+    color: #fff;
+    border-color: #4f46e5;
+}
+
+.button-secondary:hover {
+    background-color: #4338ca;
+    border-color: #4338ca;
+}
+
+.button-primary .button-icon,
+.button-secondary .button-icon {
+    margin-right: 0.5rem; /* مسافة بين الأيقونة والنص */
+}
+
+/* التباعد للطبقات */
+.space-y-4 > *:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.space-y-6 > *:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+
+.space-x-4 > *:not(:first-child) {
+    margin-left: 1rem;
+}
+
+/* رسائل الفلاش (Toast) */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+}
+
+.toast {
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    text-align: right; /* لمحاذاة نص التوست لليمين */
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-default {
+    background-color: #3498db; /* Blue */
+}
+
+.toast-success {
+    background-color: #28a745; /* Green */
+}
+
+.toast-error {
+    background-color: #dc3545; /* Red */
+}

@@ -1,0 +1,79 @@
+{% load static %}
+<style>
+    .notification-item .badge {
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 3px 7px;
+        font-size: 0.8em;
+        margin-left: 5px;
+    }
+</style>
+<nav class="hr-flow-navbar" id="desktopNavbar">
+    <a href="{% url 'home' %}" class="navbar-brand-hrf">
+        <img src="{% static 'img/logo-icon.svg' %}" alt="HR-Flow Logo" class="logo-icon">
+        HR-Flow
+    </a>
+
+    <ul class="nav-links-hrf">
+        <li class="nav-item-hrf">
+            <a href="{% url 'home' %}" class="nav-link-hrf"><i class="fas fa-home"></i> الرئيسية</a>
+        </li>
+        <li class="nav-item-hrf">
+            <a href="#" class="nav-link-hrf"><i class="fas fa-info-circle"></i> عن النظام</a>
+        </li>
+        <li class="nav-item-hrf">
+            <a href="#" class="nav-link-hrf"><i class="fas fa-headset"></i> الدعم</a>
+        </li>
+        {% if not request.user.is_authenticated %}
+        <li class="nav-item-hrf">
+            <a href="{% url 'login' %}" class="nav-link-hrf btn-primary-flow">تسجيل الدخول</a>
+        </li>
+        {% else %}
+        <li class="nav-item-hrf">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="nav-link-hrf btn-primary-flow">تسجيل الخروج</button>
+            </form>
+        </li>
+        {% endif %}
+    </ul>
+
+    <ul class="nav-icons-hrf">
+        {% if request.user.is_authenticated %}
+        <li class="nav-item-hrf dropdown-hrf">
+            <a class="nav-link-hrf" href="#" id="messagesDropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="far fa-comments"></i>
+                <span class="badge-hrf badge-danger-hrf">3</span>
+            </a>
+            </li>
+        {% endif %}
+    </ul>
+
+     <ul>
+        {% comment %} <li><a href="{% url 'permission_request_list' %}">طلبات الإذن</a></li> {% endcomment %}
+        {% if request.user.is_authenticated and pending_requests_count > 0 %}
+            <li class="notification-item">
+                <a href="{% url 'permission_request_list' %}">
+                    <i class="far fa-bell"></i> <span class="badge">{{ pending_requests_count }}</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+
+</nav>
+
+<div class="mobile-topbar" id="mobileTopbar">
+    <button class="menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <span class="brand-name">HR-Flow</span>
+    <div class="mobile-icons">
+        {% if request.user.is_authenticated %}
+        <a href="#" class="mobile-nav-link"><i class="far fa-comments"></i></a>
+        <a href="#" class="mobile-nav-link"><i class="far fa-bell"></i></a>
+        {% else %}
+        <a href="{% url 'login' %}" class="mobile-nav-link"><i class="fas fa-sign-in-alt"></i></a>
+        {% endif %}
+    </div>
+</div>

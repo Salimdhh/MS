@@ -1,0 +1,82 @@
+{% extends 'admin/change_form.html' %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block content %}{{ block.super }}
+    <div class="submit-row">
+        {% if original.is_fully_approved %}
+            <p class="approved-message">✅ تم الموافقة النهائية على هذا الطلب.</p>
+        {% elif original.is_rejected_at_any_stage %}
+            <p class="rejected-message">❌ تم رفض هذا الطلب في إحدى المراحل.</p>
+        {% else %}
+            <h3>إجراء الموافقة:</h3>
+            <form method="post" action="" style="display:inline-block;">
+                {% csrf_token %}
+                <label for="id_notes" style="display:block; margin-bottom: 5px;">ملاحظات (اختياري):</label>
+                <textarea id="id_notes" name="notes" rows="3" cols="50" style="width: 100%; border: 1px solid #ccc; padding: 8px; border-radius: 4px;"></textarea>
+
+                <div style="margin-top: 10px;">
+                    {% if can_approve_direct_manager %}
+                        <button type="submit" name="_approve" value="direct_manager" class="button default" style="background-color: #28a745;">موافقة (مسؤول مباشر)</button>
+                        <button type="submit" name="_reject" value="direct_manager" class="button" style="background-color: #dc3545;">رفض (مسؤول مباشر)</button>
+                    {% elif can_approve_department_manager %}
+                        <button type="submit" name="_approve" value="department_manager" class="button default" style="background-color: #28a745;">موافقة (مدير إدارة)</button>
+                        <button type="submit" name="_reject" value="department_manager" class="button" style="background-color: #dc3545;">رفض (مدير إدارة)</button>
+                    {% elif can_approve_hr %}
+                        <button type="submit" name="_approve" value="hr" class="button default" style="background-color: #28a745;">موافقة (شؤون موظفين)</button>
+                        <button type="submit" name="_reject" value="hr" class="button" style="background-color: #dc3545;">رفض (شؤون موظفين)</button>
+                    {% else %}
+                        <p style="color: #666;">الطلب في انتظار الموافقة من المرحلة التالية، أو لا تملك صلاحية الموافقة في هذه المرحلة.</p>
+                    {% endif %}
+                </div>
+            </form>
+        {% endif %}
+    </div>
+    <style>
+        /* CSS بسيط لتجميل الأزرار في لوحة الإدارة */
+        .submit-row .button {
+            display: inline-block;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .submit-row .button.default { /* زر الموافقة */
+            background-color: #28a745; /* أخضر */
+        }
+        .submit-row .button.default:hover {
+            background-color: #218838;
+        }
+        .submit-row .button[name="_reject"] { /* زر الرفض */
+            background-color: #dc3545; /* أحمر */
+        }
+        .submit-row .button[name="_reject"]:hover {
+            background-color: #c82333;
+        }
+        .submit-row h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .approved-message, .rejected-message {
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .approved-message {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .rejected-message {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+{% endblock %}

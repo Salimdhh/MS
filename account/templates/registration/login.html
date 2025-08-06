@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR-Flow - تسجيل الدخول</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/hr_flow_style.css' %}"> {# Keep main styles for utility classes and colors #}
+    <link rel="stylesheet" href="{% static 'css/account/login.css' %}"> {# Specific styles for login form #}
+</head>
+<body>
+    <div class="outer-login-container">
+        <h1 class="main-heading">تسجيل الدخول</h1>
+        <p class="sub-heading">الرجاء إدخال بيانات الدخول الخاصة بك</p>
+
+        <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+            <div class="flex justify-center mb-8">
+                <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-white">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+
+            {# Display form errors if any (from Django Forms) #}
+            {% if form.errors %}
+                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-red-700 font-medium">خطأ في تسجيل الدخول</p>
+                    <ul class="text-red-600 text-sm list-disc pl-5">
+                        {% for field, errors in form.errors.items %}
+                            {% if field != '__all__' %}
+                                <li><strong>{{ field.label }}</strong>
+                            {% endif %}
+                            {% for error in errors %}
+                                {{ error }}{% if not forloop.last %}<br>{% endif %}
+                            {% endfor %}
+                            {% if field != '__all__' %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %} {# Required for Django forms #}
+
+                {# Loop through form fields for consistency and error handling #}
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-right mb-2 text-gray-700">
+                        {{ field.label }}
+                    </label>
+                    <div class="input-with-icon">
+                        {# Determine input type and icon based on field name #}
+                        {% if field.name == 'password' %}
+                            <input
+                                type="password"
+                                id="{{ field.id_for_label }}"
+                                name="{{ field.name }}"
+                                class="form-input-field"
+                                placeholder="أدخل {{ field.label|lower }}"
+                                {% if field.field.required %}required{% endif %}
+                            />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon text-gray-400">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        {% else %} {# This will handle 'username' field #}
+                            <input
+                                type="text"
+                                id="{{ field.id_for_label }}"
+                                name="{{ field.name }}"
+                                value="{{ field.value|default:'' }}"
+                                class="form-input-field"
+                                placeholder="أدخل {{ field.label|lower }}"
+                                {% if field.field.required %}required{% endif %}
+                            />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon text-gray-400">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        {% endif %}
+                    </div>
+                    {# Display individual field errors if any #}
+                    {% for error in field.errors %}
+                        <p class="text-red-600 text-sm mt-1 text-right">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                
+                <div class="text-right mt-2">
+                    <a href="{% url 'password_reset' %}" class="text-blue-600 text-sm hover:underline">نسيت كلمة المرور؟</a>
+                </div>
+
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="submit-button"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button-icon">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    <span>تسجيل الدخول</span>
+                </button>
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-700 text-sm">
+                        ليس لديك حساب؟ <a href="{% url 'register' %}" class="text-blue-600 hover:underline">إنشاء حساب جديد</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function showToast(message, type = 'default') {
+                const toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    console.error('Toast container not found!');
+                    return;
+                }
+
+                const toastDiv = document.createElement('div');
+                toastDiv.classList.add('toast');
+                if (type === 'error') {
+                    toastDiv.classList.add('toast-error');
+                } else if (type === 'success') {
+                    toastDiv.classList.add('toast-success');
+                } else {
+                    toastDiv.classList.add('toast-default');
+                }
+                toastDiv.textContent = message;
+                toastContainer.appendChild(toastDiv);
+
+                setTimeout(() => {
+                    toastDiv.classList.add('show');
+                }, 10);
+
+                setTimeout(() => {
+                    toastDiv.classList.remove('show');
+                    toastDiv.addEventListener('transitionend', () => toastDiv.remove(), { once: true });
+                }, 3000);
+            }
+
+            {% if messages %}
+                {% for message in messages %}
+                    showToast("{{ message|escapejs }}", "{{ message.tags }}");
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
+</body>
+</html>

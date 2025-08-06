@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR-Flow - إنشاء حساب جديد</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/hr_flow_style.css' %}"> {# Keep main styles for utility classes and colors #}
+    <link rel="stylesheet" href="{% static 'css/account/register.css' %}"> {# Specific styles for login/register forms #}
+</head>
+<body>
+    <div class="outer-login-container">
+        <h1 class="main-heading">إنشاء حساب جديد</h1>
+        <p class="sub-heading">الرجاء التسجيل باستخدام النموذج التالي:</p>
+
+        <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+
+            {# Display form errors if any (from Django Forms) #}
+            {% if user_form.errors %}
+                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-red-700 font-medium">خطأ في التسجيل</p>
+                    <ul class="text-red-600 text-sm list-disc pl-5">
+                        {# Iterate over field errors #}
+                        {% for field, errors in user_form.errors.items %}
+                            {% if field != '__all__' %}
+                                <li><strong>{{ field.label }}</strong>
+                            {% endif %}
+                            {% for error in errors %}
+                                {{ error }}{% if not forloop.last %}<br>{% endif %}
+                            {% endfor %}
+                            {% if field != '__all__' %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {# Display non-field errors (e.g., password mismatch) #}
+                        {% if user_form.non_field_errors %}
+                            {% for error in user_form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %} {# Required for Django forms #}
+
+                {# Loop through form fields and apply custom styling #}
+                {% for field in user_form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-right mb-2 text-gray-700">
+                        {{ field.label }}
+                    </label>
+                    <div class="input-with-icon">
+                        {# Check field name to apply specific icon for first_name/last_name #}
+                        {% if field.name == 'first_name' or field.name == 'last_name' %}
+                            <input
+                                type="text"
+                                id="{{ field.id_for_label }}"
+                                name="{{ field.name }}"
+                                value="{{ field.value|default:'' }}"
+                                class="form-input-field"
+                                placeholder="أدخل {{ field.label|lower }}"
+                                {% if field.field.required %}required{% endif %}
+                            />
+                            {# Icon for name fields (e.g., user icon) #}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon text-gray-400">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        {% elif field.field.widget.input_type == 'password' %}
+                            <input
+                                type="password"
+                                id="{{ field.id_for_label }}"
+                                name="{{ field.name }}"
+                                class="form-input-field"
+                                placeholder="أدخل {{ field.label|lower }}"
+                                {% if field.field.required %}required{% endif %}
+                            />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon text-gray-400">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        {% elif field.field.widget.input_type == 'email' %}
+                            <input
+                                type="email"
+                                id="{{ field.id_for_label }}"
+                                name="{{ field.name }}"
+                                value="{{ field.value|default:'' }}"
+                                class="form-input-field"
+                                placeholder="أدخل {{ field.label|lower }}"
+                                {% if field.field.required %}required{% endif %}
+                            />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon text-gray-400">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-2 6"></path>
+                            </svg>
+                        {% else %}
+                            {# Default for username or any other text input #}
+                            <input
+                                type="text"
+                                id="{{ field.id_for_label }}"
+                                name="{{ field.name }}"
+                                value="{{ field.value|default:'' }}"
+                                class="form-input-field"
+                                placeholder="أدخل {{ field.label|lower }}"
+                                {% if field.field.required %}required{% endif %}
+                            />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon text-gray-400">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        {% endif %}
+                    </div>
+                    {# Display individual field errors if any #}
+                    {% for error in field.errors %}
+                        <p class="text-red-600 text-sm mt-1 text-right">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button-icon">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>إنشاء حسابي</span>
+                </button>
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-700 text-sm">
+                        هل لديك حساب بالفعل؟ <a href="{% url 'login' %}" class="text-blue-600 hover:underline">تسجيل الدخول</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function showToast(message, type = 'default') {
+                const toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    console.error('Toast container not found!');
+                    return;
+                }
+
+                const toastDiv = document.createElement('div');
+                toastDiv.classList.add('toast');
+                if (type === 'error') {
+                    toastDiv.classList.add('toast-error');
+                } else if (type === 'success') {
+                    toastDiv.classList.add('toast-success');
+                } else {
+                    toastDiv.classList.add('toast-default');
+                }
+                toastDiv.textContent = message;
+                toastContainer.appendChild(toastDiv);
+
+                setTimeout(() => {
+                    toastDiv.classList.add('show');
+                }, 10);
+
+                setTimeout(() => {
+                    toastDiv.classList.remove('show');
+                    toastDiv.addEventListener('transitionend', () => toastDiv.remove(), { once: true });
+                }, 3000);
+            }
+
+            {% if messages %}
+                {% for message in messages %}
+                    showToast("{{ message|escapejs }}", "{{ message.tags }}");
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
+</body>
+</html>

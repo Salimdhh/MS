@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}تأكيد حذف المجموعة{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6 max-w-md">
+    <div class="bg-white shadow-md rounded-lg p-8 text-center">
+        <h1 class="text-2xl font-bold text-red-700 mb-4">تأكيد حذف المجموعة</h1>
+        <p class="text-gray-700 mb-6">هل أنت متأكد من أنك تريد حذف المجموعة "<span class="font-semibold">{{ group.name }}</span>"؟</p>
+        <p class="text-red-600 font-medium mb-8">
+            **ملاحظة هامة:** لن يتم حذف المستخدمين التابعين لهذه المجموعة، ولكن سيتم إزالة هذه المجموعة منهم.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="flex justify-center gap-4">
+                <button type="submit" class="btn-delete-confirm">
+                    <span>نعم، احذف</span>
+                    <svg class="button-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <a href="{% url 'group_list' %}" class="btn-secondary">
+                    <span>إلغاء</span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    .btn-delete-confirm {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        background-color: #ef4444; /* red-500 */
+        color: #ffffff;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s ease-in-out;
+        border: 1px solid #ef4444;
+    }
+
+    .btn-delete-confirm:hover {
+        background-color: #dc2626; /* red-600 */
+        border-color: #dc2626;
+    }
+</style>
+{% endblock %}
